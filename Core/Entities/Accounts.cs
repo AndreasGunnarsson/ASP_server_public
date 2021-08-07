@@ -26,4 +26,5 @@ namespace Core.Entities
 }
 
 // Behövs overloaden med passwordhash och passwordsalt? Antagligen senare.
+// TODO: Ändra namn på PasswordHash då vi inte bara anävnder det för hashes.
 // TODO: Använd private set?

@@ -16,6 +16,7 @@ namespace UserInterface.Models
         
         [FromForm]
         [Required(ErrorMessage = "Password cannot be empty.")]
+        [StringLength(100, ErrorMessage = "The password cannot exceed 100 characters.")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
@@ -24,5 +25,4 @@ namespace UserInterface.Models
 }
 
 // TODO: JavaScrpt för att hantera "Password Confirm"-dialogen i webbläsaren. 
-// TODO: Lägg till string length-attribut på Password.
 // TODO: Skapa javascript för att användaren ska få feedback om hur bra dess lösenord är.
