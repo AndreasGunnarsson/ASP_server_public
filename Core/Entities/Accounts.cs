@@ -8,9 +8,18 @@ namespace Core.Entities
         public string PasswordHash { get; set; }
         public string PasswordSalt { get; set; }
 
+        public Accounts() {}
+
         public Accounts(int id, string name, string passwordhash, string passwordsalt)
         {
             Id = id;
+            Name = name;
+            PasswordHash = passwordhash;
+            PasswordSalt = passwordsalt; 
+        }
+
+        public Accounts(string name, string passwordhash, string passwordsalt)
+        {
             Name = name;
             PasswordHash = passwordhash;
             PasswordSalt = passwordsalt; 

@@ -21,7 +21,7 @@ namespace Infrastructure
 
             var roles = _db.Connection.Query<Roles>(sql);
 
-            foreach (var f in roles)        // Debug.
+            foreach (var f in roles)                            // Debug.
             {
                 Console.WriteLine("Role: " + f);
             }
@@ -38,9 +38,9 @@ namespace Infrastructure
                 PwdSalt = account.PasswordSalt
             };
 
-            var testresult = _db.Connection.Execute(sql, parameters);       // Får man något tillbaka?
+            var testresult = _db.Connection.Execute(sql, parameters);       // TODO: Får man något tillbaka?
 
-            Console.WriteLine("CreateAccount testresult: " + testresult);         // Debug.
+            /* Console.WriteLine("CreateAccount testresult: " + testresult);         // Debug. */
         }
 
         public IEnumerable<Accounts> ReadAllAccounts()
@@ -49,10 +49,10 @@ namespace Infrastructure
 
             var accounts = _db.Connection.Query<Accounts>(sql);
 
-            foreach (var f in accounts)            // Debug
-            {
-                Console.WriteLine("Account: " + f);
-            }
+            /* foreach (var f in accounts)                                         // Debug */
+            /* { */
+            /*     Console.WriteLine("[Repository] Account: " + f.Name); */
+            /* } */
 
             return accounts;
         }
@@ -63,10 +63,10 @@ namespace Infrastructure
 
             var accountnames = _db.Connection.Query<AccountsNames>(sql);
 
-            foreach (var f in accountnames)            // Debug
-            {
-                Console.WriteLine("Accountnames: " + f);
-            }
+            /* foreach (var f in accountnames)                                     // Debug */
+            /* { */
+            /*     Console.WriteLine("[Repository] Accountnames: " + f.Name); */
+            /* } */
 
             return accountnames;
         }

@@ -94,7 +94,6 @@ namespace UserInterface.Controllers
             {
                 Accounts plainTextAccount = new Accounts(model.UserName, model.Password);
                 _createuserservice.CreateUser(plainTextAccount);
-
                 return View();
                 // Ska finnas form.
                     // Användarnamn
@@ -106,8 +105,6 @@ namespace UserInterface.Controllers
                 // Ska inte gå att köra om man redan är inloggad (Behöver authorization-attribut).
                 // Skicka en till en View som confirmar att accountet är skapat..
 
-                // TODO: Måste kolla ifall användaren redan existerar och isf skriva ut ett felmeddelande. Se [Remote].
-                    // https://docs.microsoft.com/en-us/aspnet/core/mvc/models/validation?view=aspnetcore-5.0#remote-attribute
                 // TODO: Läs om "over posting" ([Bind]).
             }
         }
