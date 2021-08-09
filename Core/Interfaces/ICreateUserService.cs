@@ -8,7 +8,7 @@ namespace Core.Interfaces
         // Method to compare all account user names in the database with the parameter "username".
         bool IsAccountNameAvailable(string username);
         // Method to create a new user. Does password hashing and salting.
-        void CreateUser(Accounts account);
+        void CreateUser(AccountsTemp account);
     }
 }
 

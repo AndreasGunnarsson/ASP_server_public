@@ -92,7 +92,7 @@ namespace UserInterface.Controllers
 
             else
             {
-                Accounts plainTextAccount = new Accounts(model.UserName, model.Password);
+                AccountsTemp plainTextAccount = new AccountsTemp(model.UserName, model.Password);
                 _createuserservice.CreateUser(plainTextAccount);
                 return View();
                 // Ska finnas form.

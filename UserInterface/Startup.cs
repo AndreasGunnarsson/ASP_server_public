@@ -39,6 +39,7 @@ namespace UserInterface
             services.AddTransient<IAppDb, AppDb>(_ => new AppDb(Configuration["ConnectionStrings:Default"]));
             services.AddControllersWithViews();
             services.AddTransient<IUserRolesRepository, UserRolesRepository>();
+            services.AddTransient<IPasswordManagementService, PasswordManagementService>();
             services.AddSingleton<IUserBaseService, UserBaseService>();
             services.AddTransient<ICreateUserService, CreateUserService>();
             /* services.AddScoped<IMyDependency, MyDependency>(); */
