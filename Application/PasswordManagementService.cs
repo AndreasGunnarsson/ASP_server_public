@@ -57,6 +57,7 @@ namespace Application
             /* foreach(var v in account.PasswordHash) { Console.WriteLine("Password from DB: " + v); }                          // Debug. */
             var isSame = generatedPassword.SequenceEqual(account.PasswordHash);
             Console.WriteLine("isSame: " + isSame + " username: " + username);                        // Debug.
+            // TODO: Måste returnera något!
         }
     }
 }

@@ -24,15 +24,17 @@ namespace Application
             }
         }
 
-        public void TESTMETHOD()                                    // Debug.
-        {
-            Console.WriteLine("DEBUG: Inside TESTMETHOD");
-        }
+        /* public void TESTMETHOD()                                    // Debug. */
+        /* { */
+        /*     Console.WriteLine("DEBUG: Inside TESTMETHOD"); */
+        /* } */
 
         public IEnumerable<Roles> allRoles { get; private set; }
         // TODO: Kolla om man kan ha "private set" eller "init". Vet inte ifall detta göt någon skillnad alls på en collection i slutändan..
-        public List<AccountsLogin> activeSessions { get; set; }
+        public List<AccountsLogin> activeSessions { get; private set; }
         // TODO: Kanske kan ha activeSessions som "internal set" om man implementerar en annan service? Tror inte något behöver sättas av middleware utan bara av en annan service? 
+        public void AddToSession() { }              // TODO.
+        public void RemoveFromSession() { }         // TODO.
     }
 }
 

@@ -1,6 +1,6 @@
 namespace Core.Entities
 {
-    /// <summary>Value object used between the Controller and the Application layer when creating an account.</summary>
+    /// <summary>Value object used between the Controller and the Application layer when creating an account and when logging in.</summary>
     public class AccountsTemp
     {
         public string Name { get; }
