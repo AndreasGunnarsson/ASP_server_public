@@ -45,7 +45,7 @@ namespace Application
             _repository.CreateAccount(accountToDatebase);
 
             Console.WriteLine("CreateUser method: " + account.Name + " " + account.Password);      // Debug.
-            _passwordmanagement.CheckPassword(account.Name, account.Password);      // Debug.
+            /* _passwordmanagement.CheckPassword(account.Name, account.Password);      // Debug. */
             /* _passwordmanagement.CheckPassword("fis", "bobby");          // Debug. */
 
             // TODO: Testa så att det går att logga in igen.

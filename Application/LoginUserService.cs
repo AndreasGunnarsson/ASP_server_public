@@ -22,11 +22,25 @@ namespace Application
             // TODO: Behöver jag repository här?
         }
 
+        public byte[] GenerateSessionHash()
+        {
+            var randomGenerator = RandomNumberGenerator.Create();
+            byte[] sessionHash = new Byte[16];
+            randomGenerator.GetBytes(sessionHash);
+            foreach(var v in sessionHash) { Console.WriteLine("Generated Session Hash: " + v); }                          // Debug.
+            Console.WriteLine("Generated session hash (string): " + Encoding.UTF8.GetString(sessionHash));                  // Debug.
+            return sessionHash;
+            // TODO: Lägg till i interface.
+        }
+
         public void LoginUser(AccountsTemp account)
         {
+            Console.WriteLine("LoginUser: " + account.Name + " " + account.Password);           // Debug.
+            GenerateSessionHash();
             // För att logga in.
                 // Måste använda PasswordManagementService.CheckPassword
                     // Om sant så lägg till användaren i session > UserBaseService.AddToSession
+                        // Lägger till session-id och tid som användaren loggade in.
                         // if-checka först ifall användaren redan finns i session.
                         // Behöver också hantera cookies på något sätt; lägga till en session cookie för inloggad användare.
                         // Måste generera något session-id.

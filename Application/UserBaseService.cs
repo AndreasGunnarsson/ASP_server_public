@@ -33,7 +33,13 @@ namespace Application
         // TODO: Kolla om man kan ha "private set" eller "init". Vet inte ifall detta göt någon skillnad alls på en collection i slutändan..
         public List<AccountsLogin> activeSessions { get; private set; }
         // TODO: Kanske kan ha activeSessions som "internal set" om man implementerar en annan service? Tror inte något behöver sättas av middleware utan bara av en annan service? 
-        public void AddToSession() { }              // TODO.
+        public void ReadAllSessions() { }           // TODO.
+
+        public void AddToSession(UserSession usersession)
+        {
+            // TODO
+        }
+
         public void RemoveFromSession() { }         // TODO.
     }
 }

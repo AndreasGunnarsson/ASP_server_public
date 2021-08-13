@@ -5,7 +5,7 @@ namespace Core.Interfaces
     {
         byte[] GenerateSalt();
         byte[] GeneratePassword(string password, byte[] salt);
-        void CheckPassword(string username, string password);
+        void CheckPassword(string username, string password);           // Used when logging in to check the validity of the password. 
     }
 }
 

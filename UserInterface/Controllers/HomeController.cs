@@ -19,17 +19,19 @@ namespace UserInterface.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly ICreateUserService _createuserservice;
+        private readonly ILoginUserService _loginuserservice;
         /* private AppDb Db { get; set; } */
         /* private readonly IAppDb _db; */
         /* private readonly IUserBaseService _userBaseService; */ 
 
         /* public HomeController(ILogger<HomeController> logger, IAppDb db, IUserBaseService ubs) */
-        public HomeController(ILogger<HomeController> logger, ICreateUserService createuserservice)
+        public HomeController(ILogger<HomeController> logger, ICreateUserService createuserservice, ILoginUserService loginuserservice)
         {
             /* Ed25519AuthenticationPlugin.Install(); */
             /* _db = db; */
             _logger = logger;
             _createuserservice = createuserservice;
+            _loginuserservice = loginuserservice;
             /* _userBaseService = ubs; */
         }
 
@@ -103,20 +105,38 @@ namespace UserInterface.Controllers
                 // Måste ta input-parametrar alternativt ett objekt.
                 // Använd sedan logik från Application-lagret.
                 // Ska inte gå att köra om man redan är inloggad (Behöver authorization-attribut).
-                // Skicka en till en View som confirmar att accountet är skapat..
 
+                // TODO: Skicka en till en View som confirmar att accountet är skapat.
                 // TODO: Läs om "over posting" ([Bind]).
             }
         }
 
-        /* [AcceptVerbs("GET", "POST")] */
-        /* public IActionResult VerifyUserName(string username) */
-        /* { */
-        /*     Console.WriteLine("VerifyUserName: " + username);       // Debug. */
-        /*     return Json($"VerifyUsername fis"); */
-        /*     // TODO: Vet inte om den fungerar? */
-        /*     // Vill använda den för att jämföra alla namn i databasen så att man inte kan skriva in ett som är likadant. */
-        /* } */
+        [HttpGet]
+        public IActionResult LoginUser()
+        {
+            Console.WriteLine("LoginUser GET");                        // Debug.
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult LoginUser(LoginUser model)
+        {
+            Console.WriteLine("LoginUser POST");                        // Debug.
+            if (!ModelState.IsValid)
+            {
+                Console.WriteLine("ModelState not valid.");         // Debug.
+                return View(); 
+            }
+
+            else
+            {
+                AccountsTemp accountLogin = new AccountsTemp(model.UserName, model.Password);
+                _loginuserservice.LoginUser(accountLogin);
+                return View();
+
+                // TODO: Läs om "over posting" ([Bind]).
+            }
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

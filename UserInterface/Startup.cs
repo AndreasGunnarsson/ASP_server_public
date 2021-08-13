@@ -42,6 +42,7 @@ namespace UserInterface
             services.AddTransient<IPasswordManagementService, PasswordManagementService>();
             services.AddSingleton<IUserBaseService, UserBaseService>();
             services.AddTransient<ICreateUserService, CreateUserService>();
+            services.AddTransient<ILoginUserService, LoginUserService>();
             /* services.AddScoped<IMyDependency, MyDependency>(); */
         }
 
