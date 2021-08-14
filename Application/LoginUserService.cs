@@ -31,14 +31,30 @@ namespace Application
             Console.WriteLine("Generated session hash (string): " + Encoding.UTF8.GetString(sessionHash));                  // Debug.
             return sessionHash;
             // TODO: Lägg till i interface.
+            // TODO: Går det bra med endast bytes i cookes?
         }
 
         public void LoginUser(AccountsTemp account)
         {
             Console.WriteLine("LoginUser: " + account.Name + " " + account.Password);           // Debug.
-            GenerateSessionHash();
+
+            var accountWithRole = _passwordmanagement.ValidatePassword(account);
+            Console.WriteLine("LoginUser userId: " + accountWithRole.Id + " role: " + accountWithRole.RolesId);         // Debug.
+
+            if (accountWithRole != null)
+            {
+                Console.WriteLine("LoginUser accountsWithRole not null");
+                var generatedSessionHash = GenerateSessionHash();
+                DateTime loginDate = DateTime.Now;
+                UserSession session = new UserSession(generatedSessionHash, loginDate, accountWithRole.Id, accountWithRole.RolesId);
+                Console.WriteLine("LoginUser session: " + session.sessionId + " " + session.loginDate.ToString() + "  " + session.userId + " " + session.userRole);
+                /* _userbaseservice.AddToSession(); */
+            }
+
+
+            
             // För att logga in.
-                // Måste använda PasswordManagementService.CheckPassword
+                // Måste använda PasswordManagementService.IsValidPassword()
                     // Om sant så lägg till användaren i session > UserBaseService.AddToSession
                         // Lägger till session-id och tid som användaren loggade in.
                         // if-checka först ifall användaren redan finns i session.

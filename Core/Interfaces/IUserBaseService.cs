@@ -12,9 +12,9 @@ namespace Core.Interfaces
         IEnumerable<Roles> allRoles { get; }        // private set. Alternativt änvänd "init"?
         // Lista med alla aktiva sessioner.
         // Används både för/av authentication och authorization.
-        List<AccountsLogin> activeSessions { get; }
+        List<UserSession> activeSessions { get; }
         // TODO: Ta bort "set" om det fungerar med "internal"? Se implementationen.
-        void ReadAllSessions();                // Används för att hämta lista med alla användare i activeSessions. För att kunna läsa om de är inloggade eller ej. TODO: Kanske räcker att kolla ett session-id och returnera true/false här?
+        List<UserSession> ReadAllSessions();                // Används för att hämta lista med alla användare i activeSessions. För att kunna läsa om de är inloggade eller ej. TODO: Kanske räcker att kolla ett session-id och returnera true/false här?
         void AddToSession(UserSession usersession);                            // För att lägga till en ny session bundet till en användare i activeSessions.
         void RemoveFromSession();                       // Tar bort en användare från activeSessions.
             // TODO: Behöver en input-parameter. Behöver jag bättre identifierare i "UserSession"? Kanske Id från databasen för användaren?
@@ -22,3 +22,5 @@ namespace Core.Interfaces
 }
 
 // TODO: Döp om till IAccountsBaseService
+// TODO: Kan man göra activeSessions-listan och allRoles-listan "private" eller read-only? Ska endast gå att nå med metoder.
+// TODO: Returnera List<UserSession> i activeSessions är värdelöst då man får en direkt referens till orginal-listan.

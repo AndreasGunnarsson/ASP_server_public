@@ -9,6 +9,8 @@ namespace Core.Entities
         /* public string PasswordSalt { get; set; } */
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
+        public int RolesId { get; set; }
+        // TODO: RolesId ska vara uint?
 
         public Accounts() {}
 
@@ -37,5 +39,6 @@ namespace Core.Entities
 }
 
 // Behövs overloaden med passwordhash och passwordsalt? Antagligen senare.
+// TODO: Tror man kan ändra <summary> till att bara beskriva det som att man hämtar från databasen. Tror inte denna klass används nämnvärt mycket i programmet annars.
 // TODO: Ändra namn på PasswordHash då vi inte bara anävnder det för hashes.
 // TODO: Använd private set?

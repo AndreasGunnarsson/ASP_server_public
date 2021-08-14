@@ -44,20 +44,29 @@ namespace Application
             // TODO: Gör det någon skillnad på outputen om man ändrar dem?
         }
 
-        public void CheckPassword(string username, string password)
+        public AccountsRoles ValidatePassword(AccountsTemp account)
         {
-            Console.WriteLine("CheckPassword parameters, username: " + username + " password: " + password);       // Debug.
-            byte[] passwordByte = Encoding.ASCII.GetBytes(password);
-            var allAccounts = _repository.ReadAllAccounts();
+            Console.WriteLine("CheckPassword parameters, username: " + account.Name + " password: " + account.Name);       // Debug.
+            byte[] passwordByte = Encoding.ASCII.GetBytes(account.Password);
+            var allAccountsFromDb = _repository.ReadAllAccounts();
 
             // TODO: Måste if-checka allAccounts.
-            Accounts account = allAccounts.FirstOrDefault(x => x.Name == username);
-            Console.WriteLine("account (from database): " + account.Name + " pwd: " + account.PasswordHash + " salt: " + account.PasswordSalt);       // Debug.
-            var generatedPassword = GeneratePassword(password, account.PasswordSalt);
+                // Alternativt är det kanske accountUser som måste kollas; om användaren inte finns blir det tråkigt.
+            Accounts singleAccount = allAccountsFromDb.FirstOrDefault(x => x.Name == account.Name);
+            Console.WriteLine("account (from database): " + singleAccount.Name + " pwd: " + singleAccount.PasswordHash + " salt: " + singleAccount.PasswordSalt + " rolesid: " + singleAccount.RolesId);       // Debug.
+            var generatedPassword = GeneratePassword(account.Password, singleAccount.PasswordSalt);
             /* foreach(var v in account.PasswordHash) { Console.WriteLine("Password from DB: " + v); }                          // Debug. */
-            var isSame = generatedPassword.SequenceEqual(account.PasswordHash);
-            Console.WriteLine("isSame: " + isSame + " username: " + username);                        // Debug.
-            // TODO: Måste returnera något!
+            bool isSame = generatedPassword.SequenceEqual(singleAccount.PasswordHash);
+            Console.WriteLine("isSame (CheckPassword): " + isSame + " username: " + account.Name);                        // Debug.
+            AccountsRoles returnAccountsRoles = new AccountsRoles(singleAccount.Id, singleAccount.RolesId);
+            // TODO: Se över "AccountsRoles"; behövs den? Skulle kunna använda Accounts med speciell konstruktor?
+
+
+            if (isSame == true)
+                return returnAccountsRoles;
+            else
+                return null;
+                // TODO: Måste returnera något vettigare! Ett exception?
         }
     }
 }

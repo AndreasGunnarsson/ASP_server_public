@@ -31,16 +31,25 @@ namespace Application
 
         public IEnumerable<Roles> allRoles { get; private set; }
         // TODO: Kolla om man kan ha "private set" eller "init". Vet inte ifall detta göt någon skillnad alls på en collection i slutändan..
-        public List<AccountsLogin> activeSessions { get; private set; }
+        public List<UserSession> activeSessions { get; private set; }
         // TODO: Kanske kan ha activeSessions som "internal set" om man implementerar en annan service? Tror inte något behöver sättas av middleware utan bara av en annan service? 
-        public void ReadAllSessions() { }           // TODO.
+        public List<UserSession> ReadAllSessions()
+        {
+            return activeSessions;
+        }
 
         public void AddToSession(UserSession usersession)
         {
-            // TODO
+            activeSessions.Add(usersession);
         }
 
-        public void RemoveFromSession() { }         // TODO.
+        public void RemoveFromSession()
+        {
+            // TODO
+            // Måste ha en input-paramete i metoden.
+            // Måste föst leta upp vilket Id som används.
+                // Antingen om man skickar med det i cookien eller om man letar upp utifrån det sessionId som användaren har i sin cookie.
+        }
     }
 }
 
