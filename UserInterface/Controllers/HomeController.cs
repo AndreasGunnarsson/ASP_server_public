@@ -12,6 +12,8 @@ using Dapper;
 using Core.Entities;
 using Core.Interfaces;
 using Application;
+using Microsoft.AspNetCore.Http;
+using System.Text;
 
 namespace UserInterface.Controllers
 {
@@ -78,6 +80,8 @@ namespace UserInterface.Controllers
             Console.WriteLine("CreateUser GET");                        // Debug.
             // Denna action körs vid en GET.
             // Ska inte gå att köra om man redan är inloggad.
+            var cookie = Request.Cookies["SessionId"];          // Debug.
+            Console.WriteLine("Cookie: " + cookie);             // Debug.
             return View();
         }
 
@@ -131,7 +135,15 @@ namespace UserInterface.Controllers
             else
             {
                 AccountsTemp accountLogin = new AccountsTemp(model.UserName, model.Password);
-                _loginuserservice.LoginUser(accountLogin);
+                var sessionId = _loginuserservice.LoginUser(accountLogin);
+
+                CookieOptions cookieoptions = new CookieOptions();
+                cookieoptions.HttpOnly = true;
+                // TODO: Se över "SameSite" och "Expires" för CookieOptions.
+                Response.Cookies.Append("SessionId", sessionId, cookieoptions);
+
+                // TODO: Gå till en annan sida; t.ex. home efter lyckad inloggning.
+                    // Skriv ut vem som är inloggad högst upp i högra hörnet på sidan.
                 return View();
 
                 // TODO: Läs om "over posting" ([Bind]).

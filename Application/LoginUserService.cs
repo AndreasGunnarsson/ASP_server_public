@@ -22,19 +22,19 @@ namespace Application
             // TODO: Behöver jag repository här?
         }
 
-        public byte[] GenerateSessionHash()
+        public string GenerateSessionHash()
         {
             var randomGenerator = RandomNumberGenerator.Create();
-            byte[] sessionHash = new Byte[16];
+            byte[] sessionHash = new Byte[32];
             randomGenerator.GetBytes(sessionHash);
             foreach(var v in sessionHash) { Console.WriteLine("Generated Session Hash: " + v); }                          // Debug.
-            Console.WriteLine("Generated session hash (string): " + Encoding.UTF8.GetString(sessionHash));                  // Debug.
-            return sessionHash;
+            Console.WriteLine("Generated session hash (string): " + Convert.ToBase64String(sessionHash));                  // Debug.
+            return Convert.ToBase64String(sessionHash);
             // TODO: Lägg till i interface.
             // TODO: Går det bra med endast bytes i cookes?
         }
 
-        public void LoginUser(AccountsTemp account)
+        public string LoginUser(AccountsTemp account)
         {
             Console.WriteLine("LoginUser: " + account.Name + " " + account.Password);           // Debug.
 
@@ -43,14 +43,23 @@ namespace Application
 
             if (accountWithRole != null)
             {
-                Console.WriteLine("LoginUser accountsWithRole not null");
+                Console.WriteLine("LoginUser accountsWithRole not null");                       // Debug.
                 var generatedSessionHash = GenerateSessionHash();
                 DateTime loginDate = DateTime.Now;
                 UserSession session = new UserSession(generatedSessionHash, loginDate, accountWithRole.Id, accountWithRole.RolesId);
-                Console.WriteLine("LoginUser session: " + session.sessionId + " " + session.loginDate.ToString() + "  " + session.userId + " " + session.userRole);
-                /* _userbaseservice.AddToSession(); */
+                /* Console.WriteLine("LoginUser session: " + session.sessionId + " " + session.loginDate.ToString() + "  " + session.userId + " " + session.userRole);     // Debug. */
+                Console.WriteLine("LoginUser session: " + session.sessionId + " " + session.loginDate.ToString() + "  " + session.userId + " " + session.userRole);     // Debug.
+                _userbaseservice.AddToSession(session);
+
+                var test = _userbaseservice.ReadAllSessions();          // Debug.
+                foreach (var v in test)                                 // Debug.
+                    Console.WriteLine("In session: " + v.userId);
+
+                return session.sessionId;
             }
 
+            return null;
+            // TODO: Behöver returnera något vettigt här ifall accountsWithRole == null.
 
             
             // För att logga in.

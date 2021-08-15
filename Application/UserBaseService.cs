@@ -24,23 +24,32 @@ namespace Application
             }
         }
 
-        /* public void TESTMETHOD()                                    // Debug. */
-        /* { */
-        /*     Console.WriteLine("DEBUG: Inside TESTMETHOD"); */
-        /* } */
-
         public IEnumerable<Roles> allRoles { get; private set; }
         // TODO: Kolla om man kan ha "private set" eller "init". Vet inte ifall detta göt någon skillnad alls på en collection i slutändan..
-        public List<UserSession> activeSessions { get; private set; }
+        /* public List<UserSession> activeSessions { get; private set; } */
+        /* private List<UserSession> activeSessions = new List<UserSession>(); */
+        private Dictionary<string, UserSession> activeSessions = new Dictionary<string, UserSession>();
         // TODO: Kanske kan ha activeSessions som "internal set" om man implementerar en annan service? Tror inte något behöver sättas av middleware utan bara av en annan service? 
-        public List<UserSession> ReadAllSessions()
+        // TODO: Använd inte en List utan något där man kan ha ett index så det går snabbare att leta upp allt.
+            // Lägg sessionId som index och UserSession som andra typen i denna collection?
+        // TODO: System.Collections.Concurrent. 
+
+        public UserSession ReadSession(string sessionid)
         {
-            return activeSessions;
+            var usersession = activeSessions[sessionid];
+            return usersession;
+            // TODO: Kanske räcker att man returnerar en UserSession istället för hela listan om man kan ta en input-parameter?
+                // Problemet är att jag använder activeSession-listan för att ta reda på vem som är inloggad.
+                    // Alternativ: Spara UserId eller UserName i session-cookien.
+                        // Problem: Vill helst inte dela sådan information med klienten.
+                        // Vad skulle man använda för delimiter? Smartast att lägga i slutet av sessionId?
+                    // Alternativ: Två listor; en med UserId och sessionId och en annan med resten. Resultat: Ger inget.
+            // TODO: Vi vill inte jämföra alla session-id utan endast för den aktiva användaren; blir mycket att gå igenom annars. Bäst vore om vi endast användet Id:t.
         }
 
         public void AddToSession(UserSession usersession)
         {
-            activeSessions.Add(usersession);
+            activeSessions.Add(usersession.sessionId, usersession);
         }
 
         public void RemoveFromSession()
