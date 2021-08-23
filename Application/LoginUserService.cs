@@ -51,9 +51,9 @@ namespace Application
                 Console.WriteLine("LoginUser session: " + session.sessionId + " " + session.loginDate.ToString() + "  " + session.userId + " " + session.userRole);     // Debug.
                 _userbaseservice.AddToSession(session);
 
-                var test = _userbaseservice.ReadAllSessions();          // Debug.
-                foreach (var v in test)                                 // Debug.
-                    Console.WriteLine("In session: " + v.userId);
+                /* var test = _userbaseservice.ReadAllSessions();          // Debug. */
+                /* foreach (var v in test)                                 // Debug. */
+                /*     Console.WriteLine("In session: " + v.userId); */
 
                 return session.sessionId;
             }
