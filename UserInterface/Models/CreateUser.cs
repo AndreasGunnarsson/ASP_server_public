@@ -1,4 +1,3 @@
-using System;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
@@ -19,10 +18,5 @@ namespace UserInterface.Models
         [StringLength(100, ErrorMessage = "The password cannot exceed 100 characters.")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
-
-        /* public string PasswordConfirm { get; set; } */
     }
 }
-
-// TODO: JavaScrpt för att hantera "Password Confirm"-dialogen i webbläsaren. 
-// TODO: Skapa javascript för att användaren ska få feedback om hur bra dess lösenord är.

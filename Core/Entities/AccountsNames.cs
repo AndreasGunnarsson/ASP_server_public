@@ -6,6 +6,3 @@ namespace Core.Entities
         public string Name { get; set; }
     }
 }
-
-// TODO: Går det att göra denna som ett "value object"?
-    // Kolla "init".

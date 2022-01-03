@@ -32,6 +32,7 @@ public class UsernameAvailableAttribute : ValidationAttribute
 
         return ValidationResult.Success;
     }
+
     /* public UsernameAvailableAttribute(string username) */
     /* { */
     /*     Username = username; */

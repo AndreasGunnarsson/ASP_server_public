@@ -1,40 +1,27 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using UserInterface.Models;
-/* using MySqlConnector; */
-/* using MySqlConnector.Authentication.Ed25519; */
-using Dapper;
 using Core.Entities;
 using Core.Interfaces;
-using Application;
 using Microsoft.AspNetCore.Http;
-using System.Text;
 
 namespace UserInterface.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly ICreateUserService _createuserservice;
-        private readonly ILoginUserService _loginuserservice;
-        /* private AppDb Db { get; set; } */
-        /* private readonly IAppDb _db; */
+        private readonly ICreateUserService _createUserService;
+        private readonly ILoginUserService _loginUserService;
         /* private readonly IUserBaseService _userBaseService; */ 
 
         /* public HomeController(ILogger<HomeController> logger, IAppDb db, IUserBaseService ubs) */
         public HomeController(ILogger<HomeController> logger, ICreateUserService createuserservice, ILoginUserService loginuserservice)
         {
-            /* Ed25519AuthenticationPlugin.Install(); */
-            /* _db = db; */
             _logger = logger;
-            _createuserservice = createuserservice;
-            _loginuserservice = loginuserservice;
-            /* _userBaseService = ubs; */
+            _createUserService = createuserservice;
+            _loginUserService = loginuserservice;
         }
 
         public IActionResult Index()
@@ -42,35 +29,9 @@ namespace UserInterface.Controllers
             return View();
         }
 
-        /* public IActionResult Fisdex(MySqlConnection connection) */
-        /* { */
-        /*     Console.WriteLine("Fisdex"); */
-        /*     connection.Open(); */
-        /*     using var command = new MySqlCommand("SELECT * FROM Roles;", connection); */
-        /*     return View(); */ 
-            
-        /* } */
-
         public IActionResult Privacy()
         {
-            /* Db.Connection.Open(); */
-
-            /* _userBaseService.TESTMETHOD();          // Debug/testing. */
-            /* string sql = "SELECT * FROM Roles"; */
-
-            /* var roles = _db.Connection.Query(sql); */
-
-            /* foreach (var f in roles) */
-            /* { */
-            /*     Console.WriteLine(f); */
-            /* } */
-            /* Console.WriteLine(roles); */
-            /* FiddleHelper.WriteTable(orderDetail); */
-
-            /* using var connection = new MySqlConnection(); */
             Console.WriteLine("Privacy");           // Debug.
-            /* connection.Open(); */
-            /* using var command = new MySqlCommand("SELECT * FROM Roles;", connection); */
             return View();
         }
 
@@ -93,13 +54,13 @@ namespace UserInterface.Controllers
             if (!ModelState.IsValid)
             {
                 Console.WriteLine("ModelState not valid.");         // Debug.
-                return View(); 
+                return View();
             }
 
             else
             {
                 AccountsTemp plainTextAccount = new AccountsTemp(model.UserName, model.Password);
-                _createuserservice.CreateUser(plainTextAccount);
+                _createUserService.CreateUser(plainTextAccount);
                 return View();
                 // Ska finnas form.
                     // Användarnamn
@@ -135,7 +96,7 @@ namespace UserInterface.Controllers
             else
             {
                 AccountsTemp accountLogin = new AccountsTemp(model.UserName, model.Password);
-                var sessionId = _loginuserservice.LoginUser(accountLogin);
+                var sessionId = _loginUserService.LoginUser(accountLogin);
 
                 CookieOptions cookieoptions = new CookieOptions();
                 cookieoptions.HttpOnly = true;

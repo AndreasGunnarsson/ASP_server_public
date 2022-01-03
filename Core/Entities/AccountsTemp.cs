@@ -13,5 +13,3 @@ namespace Core.Entities
         }
     }
 }
-
-// TODO: Använd init istället?

@@ -22,7 +22,7 @@ namespace Application
             var randomGenerator = RandomNumberGenerator.Create();
             byte[] passwordSalt = new Byte[16];
             randomGenerator.GetBytes(passwordSalt);
-            /* foreach(var v in passwordSalt) { Console.WriteLine("Generated Salt byte: " + v); }                          // Debug. */
+            /* foreach(var v in passwordSalt) { Console.WriteLine("Generated Salt byte: " + v); }                               // Debug. */
             return passwordSalt;
         }
 
@@ -37,16 +37,14 @@ namespace Application
             argon.Iterations = 4;
             argon.MemorySize = 1024 * 64;
             var generatedPasswordHash = argon.GetBytes(30);
-            /* Console.WriteLine("Generated hash: " + Encoding.UTF8.GetString(generatedPasswordHash));             // Debug. */
-            foreach(var v in generatedPasswordHash) { Console.WriteLine("GeneratePassword: " + v); }                          // Debug.
+            /* Console.WriteLine("Generated hash: " + Encoding.UTF8.GetString(generatedPasswordHash));                          // Debug. */
+            foreach(var v in generatedPasswordHash) { Console.WriteLine("GeneratePassword: " + v); }                            // Debug.
             return generatedPasswordHash;
-            // TODO: Se över DegreeOfParallelism, Iterations och MemorySize.
-            // TODO: Gör det någon skillnad på outputen om man ändrar dem?
         }
 
         public AccountsRoles ValidatePassword(AccountsTemp account)
         {
-            Console.WriteLine("CheckPassword parameters, username: " + account.Name + " password: " + account.Name);       // Debug.
+            Console.WriteLine("CheckPassword parameters, username: " + account.Name + " password: " + account.Name);            // Debug.
             byte[] passwordByte = Encoding.ASCII.GetBytes(account.Password);
             var allAccountsFromDb = _repository.ReadAllAccounts();
 
@@ -57,16 +55,14 @@ namespace Application
             var generatedPassword = GeneratePassword(account.Password, singleAccount.PasswordSalt);
             /* foreach(var v in account.PasswordHash) { Console.WriteLine("Password from DB: " + v); }                          // Debug. */
             bool isSame = generatedPassword.SequenceEqual(singleAccount.PasswordHash);
-            Console.WriteLine("isSame (CheckPassword): " + isSame + " username: " + account.Name);                        // Debug.
+            Console.WriteLine("isSame (CheckPassword): " + isSame + " username: " + account.Name);                              // Debug.
             AccountsRoles returnAccountsRoles = new AccountsRoles(singleAccount.Id, singleAccount.RolesId);
             // TODO: Se över "AccountsRoles"; behövs den? Skulle kunna använda Accounts med speciell konstruktor?
-
 
             if (isSame == true)
                 return returnAccountsRoles;
             else
                 return null;
-                // TODO: Måste returnera något vettigare! Ett exception?
         }
     }
 }

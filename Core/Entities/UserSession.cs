@@ -22,7 +22,6 @@ namespace Core.Entities
             userRole = userrole;
         }
 
-        // TODO: Se över getters och setters; använd "init"?
         // Är detta en DTO? Känns som att det är lite mellan ett "value object" (immutable) och en "entiet"..
     }
 }

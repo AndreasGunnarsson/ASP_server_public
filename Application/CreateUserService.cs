@@ -1,22 +1,17 @@
-using System;
 using Core.Entities;
 using Core.Interfaces;
-using Konscious.Security.Cryptography;
-using System.Text;
-using System.Security.Cryptography;
-using System.Linq;
 
 namespace Application
 {
     public class CreateUserService : ICreateUserService
     {
         private readonly IUserRolesRepository _repository;
-        private readonly IPasswordManagementService _passwordmanagement;
+        private readonly IPasswordManagementService _passwordManagementService;
 
         public CreateUserService(IUserRolesRepository repository, IPasswordManagementService passwordmanagement)
         {
             _repository = repository;
-            _passwordmanagement = passwordmanagement;
+            _passwordManagementService = passwordmanagement;
         }
 
         public bool IsAccountNameAvailable(string username)
@@ -27,10 +22,8 @@ namespace Application
             {
                 if (v.Name == username)
                 {
-                    Console.WriteLine("Name: " + v.Name + " is already in use and wont register as a new user.");       // Debug.
                     return false;
                 }
-                /* Console.WriteLine("Name: " + v.Name + " is a registered account name.");                // Debug. */
             }
             /* allAccountNames.FirstOrDefault() */
             
@@ -39,19 +32,14 @@ namespace Application
 
         public void CreateUser(AccountsTemp account)
         {
-            var passwordSalt = _passwordmanagement.GenerateSalt();
-            var passwordHash = _passwordmanagement.GeneratePassword(account.Password, passwordSalt);
+            var passwordSalt = _passwordManagementService.GenerateSalt();
+            var passwordHash = _passwordManagementService.GeneratePassword(account.Password, passwordSalt);
             Accounts accountToDatebase = new Accounts(account.Name, passwordHash, passwordSalt);
             _repository.CreateAccount(accountToDatebase);
 
-            Console.WriteLine("CreateUser method: " + account.Name + " " + account.Password);      // Debug.
-            /* _passwordmanagement.CheckPassword(account.Name, account.Password);      // Debug. */
-            /* _passwordmanagement.CheckPassword("fis", "bobby");          // Debug. */
-
-            // TODO: Testa så att det går att logga in igen.
+            /* Console.WriteLine("CreateUser method: " + account.Name + " " + account.Password);                           // Debug. */
         }
     }
 }
 
-// TODO: Sanitizea input i CreateUser.
 // TODO: Flytta salt-geneering och alla settings till egna metoder för att få de på mer enhetliga ställen (då vi vill använda samma inställningar för argon när vi loggar in någon). Lägg som service i egen klass.
