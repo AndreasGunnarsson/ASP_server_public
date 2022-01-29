@@ -18,13 +18,13 @@ namespace Application
             /* Console.WriteLine("allRoles: " + allRoles[0]);      // Debug. */
 
             allRoles = _repository.ReadAllRoles();
-            Console.WriteLine("DEBUG: Inside UserBaseService");     // Debug.
+            /* Console.WriteLine("DEBUG: Inside UserBaseService");     // Debug. */
             foreach (var f in allRoles) {                           // Debug.
                 Console.WriteLine("allRoles: " + f.Priveledge);     // Debug.
             }
         }
 
-        public IEnumerable<Roles> allRoles { get; private set; }
+        public IEnumerable<Roles> allRoles { get; init; }
         // TODO: Kolla om man kan ha "private set" eller "init". Vet inte ifall detta göt någon skillnad alls på en collection i slutändan..
         /* public List<UserSession> activeSessions { get; private set; } */
         /* private List<UserSession> activeSessions = new List<UserSession>(); */
@@ -36,8 +36,8 @@ namespace Application
 
         public UserSession ReadSession(string sessionid)
         {
-            var usersession = activeSessions[sessionid];
-            return usersession;
+            var userSession = activeSessions[sessionid];
+            return userSession;
             // TODO: Kanske räcker att man returnerar en UserSession istället för hela listan om man kan ta en input-parameter?
                 // Problemet är att jag använder activeSession-listan för att ta reda på vem som är inloggad.
                     // Alternativ: Spara UserId eller UserName i session-cookien.
@@ -47,12 +47,12 @@ namespace Application
             // TODO: Vi vill inte jämföra alla session-id utan endast för den aktiva användaren; blir mycket att gå igenom annars. Bäst vore om vi endast användet Id:t.
         }
 
-        public void AddToSession(UserSession usersession)
+        public void AddSession(UserSession usersession)
         {
             activeSessions.Add(usersession.sessionId, usersession);
         }
 
-        public void RemoveFromSession()
+        public void RemoveSession()
         {
             // TODO
             // Måste ha en input-paramete i metoden.

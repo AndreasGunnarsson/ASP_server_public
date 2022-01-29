@@ -7,17 +7,11 @@ namespace Core.Interfaces
     /// <remarks>A Dictionary with active sessions should be instansiated in the class that implements this interface.</remarks>
     public interface IUserBaseService
     {
-        // Lista med alla roller:
-        // Behöver bara köras en gång (när programmet startar).
-        /* List<Roles> allRoles(); */
-        IEnumerable<Roles> allRoles { get; }        // private set. Alternativt änvänd "init"?
-        // Lista med alla aktiva sessioner.
-        // Används både för/av authentication och authorization.
-        /* List<UserSession> activeSessions { get; } */                 // NOTE: Fungerar inte då man måste instansiera Listan mauellt.
-        // TODO: Ta bort "set" om det fungerar med "internal"? Se implementationen.
-        UserSession ReadSession(string sessionid);                // Används för att hämta lista med alla användare i activeSessions. För att kunna läsa om de är inloggade eller ej. TODO: Kanske räcker att kolla ett session-id och returnera true/false här?
-        void AddToSession(UserSession usersession);                            // För att lägga till en ny session bundet till en användare i activeSessions.
-        void RemoveFromSession();                       // Tar bort en användare från activeSessions.
+        IEnumerable<Roles> allRoles { get; }                            // set: init. Lista med alla roller; hämtad från databasen i konstruktorn för UserBaseService.
+        // Dictionary<string, UserSession>
+        UserSession ReadSession(string sessionid);                      // Används för att hämta en specifik session från samlingen med alla sessioner.
+        void AddSession(UserSession usersession);                       // För att lägga till en ny session bundet till en användare i listan med sessioner.
+        void RemoveSession();                                           // Tar bort en användare från listan med sessioner.
             // TODO: Behöver en input-parameter. Behöver jag bättre identifierare i "UserSession"? Kanske Id från databasen för användaren?
     }
 }

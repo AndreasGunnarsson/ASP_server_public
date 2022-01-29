@@ -43,7 +43,7 @@ namespace Application
                 DateTime loginDate = DateTime.Now;
                 UserSession session = new UserSession(generatedSessionHash, loginDate, accountWithRole.Id, accountWithRole.RolesId);
                 /* Console.WriteLine("LoginUser session: " + session.sessionId + " " + session.loginDate.ToString() + "  " + session.userId + " " + session.userRole);     // Debug. */
-                _userBaseService.AddToSession(session);
+                _userBaseService.AddSession(session);
 
                 /* var test = _userbaseservice.ReadAllSessions();          // Debug. */
                 /* foreach (var v in test)                                 // Debug. */
