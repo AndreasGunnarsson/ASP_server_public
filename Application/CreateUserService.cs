@@ -34,7 +34,7 @@ namespace Application
         {
             var passwordSalt = _passwordManagementService.GenerateSalt();
             var passwordHash = _passwordManagementService.GeneratePassword(account.Password, passwordSalt);
-            Accounts accountToDatebase = new Accounts(account.Name, passwordHash, passwordSalt);
+            Account accountToDatebase = new Account(account.Name, passwordHash, passwordSalt);
             _repository.CreateAccount(accountToDatebase);
 
             /* Console.WriteLine("CreateUser method: " + account.Name + " " + account.Password);                           // Debug. */

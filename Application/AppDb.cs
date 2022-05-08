@@ -6,10 +6,11 @@ namespace Application
     /* public class AppDb : IDisposable */
     public class AppDb : IAppDb 
     {
-        public MySqlConnection Connection { get; }
+        public MySqlConnection Connection { get; init; }
 
         public AppDb(string connectionString)
         {
+            /* Console.WriteLine($"connectionString: {connectionString}"); */
             Connection = new MySqlConnection(connectionString);
         }
 

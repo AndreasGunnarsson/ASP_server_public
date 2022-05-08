@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Core.Entities;
 using Core.Interfaces;
 
@@ -14,14 +13,8 @@ namespace Application
             _repository = repository;
             // TODO: Hämtar alla roller från repository.
                 // Måste ske genom DI (Startup.cs) på något sätt..
-            /* allRoles.Add(new Roles { Id = 50, Priveledge = "fis" }); */
-            /* Console.WriteLine("allRoles: " + allRoles[0]);      // Debug. */
 
             allRoles = _repository.ReadAllRoles();
-            /* Console.WriteLine("DEBUG: Inside UserBaseService");     // Debug. */
-            foreach (var f in allRoles) {                           // Debug.
-                Console.WriteLine("allRoles: " + f.Priveledge);     // Debug.
-            }
         }
 
         public IEnumerable<Roles> allRoles { get; init; }

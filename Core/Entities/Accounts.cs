@@ -1,7 +1,7 @@
 namespace Core.Entities
 {
     /// <summary>Entity that represents an account.</summary>
-    public class Accounts
+    public class Account
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -10,7 +10,7 @@ namespace Core.Entities
         public int RolesId { get; set; }
         // TODO: RolesId ska vara uint?
 
-        public Accounts() {}
+        public Account() {}
 
         /* public Accounts(int id, string name, string passwordhash, string passwordsalt) */
         /* { */
@@ -20,7 +20,7 @@ namespace Core.Entities
         /*     PasswordSalt = passwordsalt; */ 
         /* } */
 
-        public Accounts(string name, byte[] passwordhash, byte[] passwordsalt)
+        public Account(string name, byte[] passwordhash, byte[] passwordsalt)
         {
             Name = name;
             PasswordHash = passwordhash;

@@ -21,15 +21,10 @@ namespace Infrastructure
 
             var roles = _db.Connection.Query<Roles>(sql);
 
-            foreach (var f in roles)                            // Debug.
-            {
-                Console.WriteLine("Role: " + f);
-            }
-            /* Console.WriteLine(roles); */
             return roles;
         }
 
-        public void CreateAccount(Accounts account)
+        public void CreateAccount(Account account)
         {
             string sql = "INSERT INTO Accounts (Name, PasswordHash, PasswordSalt) VALUES (@AccountName, @PwdHash, @PwdSalt)";
             var parameters = new {
@@ -39,20 +34,13 @@ namespace Infrastructure
             };
 
             var testresult = _db.Connection.Execute(sql, parameters);       // TODO: Får man något tillbaka?
-
-            /* Console.WriteLine("CreateAccount testresult: " + testresult);         // Debug. */
         }
 
-        public IEnumerable<Accounts> ReadAllAccounts()
+        public IEnumerable<Account> ReadAllAccounts()
         {
             string sql = "SELECT * FROM Accounts";
 
-            var accounts = _db.Connection.Query<Accounts>(sql);
-
-            /* foreach (var f in accounts)                                         // Debug */
-            /* { */
-            /*     Console.WriteLine("[Repository] Account: " + f.Name); */
-            /* } */
+            var accounts = _db.Connection.Query<Account>(sql);
 
             return accounts;
         }
@@ -63,17 +51,16 @@ namespace Infrastructure
 
             var accountnames = _db.Connection.Query<AccountsNames>(sql);
 
-            /* foreach (var f in accountnames)                                     // Debug */
-            /* { */
-            /*     Console.WriteLine("[Repository] Accountnames: " + f.Name); */
-            /* } */
-
             return accountnames;
         }
 
-        public void UpdateAccount(Accounts account) {}
+        public void UpdateAccount(Account account)
+        {
+        }
 
-        public void DeleteAccount(Accounts account) {}
+        public void DeleteAccount(Account account)
+        {
+        }
     }
 }
 

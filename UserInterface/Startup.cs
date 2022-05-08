@@ -1,4 +1,3 @@
-using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -19,25 +18,20 @@ namespace UserInterface
             Configuration = configuration;
         }
 
-
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // TODO: Se över om man ska använda AddControllersWithViews eller om det finns något mer lightweight.
-            // TODO: Tror det finns något sätt att bunta ihop de services man själv skapat för att det ska se mer städat ut..
-            Console.WriteLine("ConnectionString: " + Configuration["ConnectionStrings:Default"]);           // Debug.
             /* services.AddTransient<MySqlConnection>(_ => new MySqlConnection(Configuration["ConnectionStrings:Default"])); */
-            /* services.AddTransient<AppDb>(_ => new AppDb(Configuration["ConnectionStrings:Default"])); */
-            services.AddTransient<IAppDb, AppDb>(_ => new AppDb(Configuration["ConnectionStrings:Default"]));
             services.AddControllersWithViews();
+            /* services.AddTransient<AppDb>(_ => new AppDb(Configuration["ConnectionStrings:Default"])); */
+            /* services.AddTransient<IAppDb, AppDb>(_ => new AppDb(Configuration["ConnectionStrings:Default"])); */
+            services.AddTransient<IAppDb, AppDb>(_ => new AppDb("server=localhost;user=testx;password=apa;Database=testdatabasex"));
             services.AddTransient<IUserRolesRepository, UserRolesRepository>();
             services.AddTransient<IPasswordManagementService, PasswordManagementService>();
             services.AddSingleton<IUserBaseService, UserBaseService>();
             services.AddTransient<ICreateUserService, CreateUserService>();
             services.AddTransient<ILoginUserService, LoginUserService>();
-            /* services.AddScoped<IMyDependency, MyDependency>(); */
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

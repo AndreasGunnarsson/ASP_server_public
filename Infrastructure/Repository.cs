@@ -39,7 +39,7 @@ namespace Infrastructure
         {
             return null;
         }
-        public IEnumerable<Comments> ReadCommentsByAccountsId(Accounts accountId)
+        public IEnumerable<Comments> ReadCommentsByAccountsId(Account accountId)
         {
             return null;
         }

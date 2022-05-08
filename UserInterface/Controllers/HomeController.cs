@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using UserInterface.Models;
@@ -31,29 +30,24 @@ namespace UserInterface.Controllers
 
         public IActionResult Privacy()
         {
-            Console.WriteLine("Privacy");           // Debug.
+            /* ViewData["FFF"] = "HelloFFF"; */
+            /* ViewData["GGG"] = "HelloGGG"; */
             return View();
         }
 
         [HttpGet]
         public IActionResult CreateUser()
         {
-            Console.WriteLine("CreateUser GET");                        // Debug.
-            // Denna action körs vid en GET.
             // Ska inte gå att köra om man redan är inloggad.
             var cookie = Request.Cookies["SessionId"];          // Debug.
-            Console.WriteLine("Cookie: " + cookie);             // Debug.
             return View();
         }
 
         [HttpPost]
         public IActionResult CreateUser(CreateUser model)
         {
-            Console.WriteLine("CreateUser POST: " + model.UserName + " " + model.Password);       // Debug.
-
             if (!ModelState.IsValid)
             {
-                Console.WriteLine("ModelState not valid.");         // Debug.
                 return View();
             }
 
@@ -79,17 +73,14 @@ namespace UserInterface.Controllers
         [HttpGet]
         public IActionResult LoginUser()
         {
-            Console.WriteLine("LoginUser GET");                        // Debug.
             return View();
         }
 
         [HttpPost]
         public IActionResult LoginUser(LoginUser model)
         {
-            Console.WriteLine("LoginUser POST");                        // Debug.
             if (!ModelState.IsValid)
             {
-                Console.WriteLine("ModelState not valid.");         // Debug.
                 return View(); 
             }
 
@@ -98,16 +89,17 @@ namespace UserInterface.Controllers
                 AccountsTemp accountLogin = new AccountsTemp(model.UserName, model.Password);
                 var sessionId = _loginUserService.LoginUser(accountLogin);
 
-                CookieOptions cookieoptions = new CookieOptions();
-                cookieoptions.HttpOnly = true;
-                // TODO: Se över "SameSite" och "Expires" för CookieOptions.
-                Response.Cookies.Append("SessionId", sessionId, cookieoptions);
+                if (sessionId != null)
+                {
+                    CookieOptions cookieoptions = new CookieOptions();
+                    cookieoptions.HttpOnly = true;
+                    Response.Cookies.Append("SessionId", sessionId, cookieoptions);
 
-                // TODO: Gå till en annan sida; t.ex. home efter lyckad inloggning.
-                    // Skriv ut vem som är inloggad högst upp i högra hörnet på sidan.
+                    // TODO: Gå till en annan sida; t.ex. home efter lyckad inloggning.
+                        // Skriv ut vem som är inloggad högst upp i högra hörnet på sidan.
+                    /* return View(); */
+                }
                 return View();
-
-                // TODO: Läs om "over posting" ([Bind]).
             }
         }
 

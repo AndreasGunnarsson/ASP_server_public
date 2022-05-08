@@ -26,7 +26,7 @@ namespace Core.Interfaces
         void CreateComment(Comments comment);
         IEnumerable<Comments> ReadAllComments();                                // Hämtar ut alla kommentarer. För admin.
         IEnumerable<Comments> ReadCommentsByAarticlesId(Articles articleId);    // Kommentarer för en specifik artikel; används när man ska ladda in en artikel och få dess tillhörande kommentarer.
-        IEnumerable<Comments> ReadCommentsByAccountsId(Accounts accountId);     // Hämtar ut alla kommentarer för en specifik användare.
+        IEnumerable<Comments> ReadCommentsByAccountsId(Account accountId);     // Hämtar ut alla kommentarer för en specifik användare.
         void UpdateComment(Comments comment);
         void DeleteComment(Comments comment);
     }
