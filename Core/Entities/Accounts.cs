@@ -3,40 +3,20 @@ namespace Core.Entities
     /// <summary>Entity that represents an account.</summary>
     public class Account
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public byte[] PasswordHash { get; set; }
-        public byte[] PasswordSalt { get; set; }
-        public int RolesId { get; set; }
-        // TODO: RolesId ska vara uint?
+        public int Id { get; }
+        public string Name { get; init; }
+        public byte[] PasswordHash { get; init; }
+        public byte[] PasswordSalt { get; init; }
+        public int RolesId { get; }
+        // TODO: RolesId as uint?
 
-        public Account() {}
+        public Account() { }
 
-        /* public Accounts(int id, string name, string passwordhash, string passwordsalt) */
-        /* { */
-        /*     Id = id; */
-        /*     Name = name; */
-        /*     PasswordHash = passwordhash; */
-        /*     PasswordSalt = passwordsalt; */ 
-        /* } */
-
-        public Account(string name, byte[] passwordhash, byte[] passwordsalt)
+        public Account(string name, byte[] passwordHash, byte[] passwordSalt)
         {
             Name = name;
-            PasswordHash = passwordhash;
-            PasswordSalt = passwordsalt; 
+            PasswordHash = passwordHash;
+            PasswordSalt = passwordSalt;
         }
-
-        /* /// <summary>Overload used when converting from a MVC model to use in the Application layer. Still not a password hash, just plain text password.</summary> */
-        /* public Accounts(string username, string password) */
-        /* { */
-        /*     Name = username; */
-        /*     PasswordHash = password; */
-        /* } */
     }
 }
-
-// Behövs overloaden med passwordhash och passwordsalt? Antagligen senare.
-// TODO: Tror man kan ändra <summary> till att bara beskriva det som att man hämtar från databasen. Tror inte denna klass används nämnvärt mycket i programmet annars.
-// TODO: Ändra namn på PasswordHash då vi inte bara anävnder det för hashes.
-// TODO: Använd private set?

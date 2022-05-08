@@ -91,9 +91,10 @@ namespace UserInterface.Controllers
 
                 if (sessionId != null)
                 {
-                    CookieOptions cookieoptions = new CookieOptions();
-                    cookieoptions.HttpOnly = true;
-                    Response.Cookies.Append("SessionId", sessionId, cookieoptions);
+                    CookieOptions cookieOptions = new CookieOptions();
+                    cookieOptions.HttpOnly = true;
+                    cookieOptions.SameSite = SameSiteMode.Strict;
+                    Response.Cookies.Append("SessionId", sessionId, cookieOptions);
 
                     // TODO: Gå till en annan sida; t.ex. home efter lyckad inloggning.
                         // Skriv ut vem som är inloggad högst upp i högra hörnet på sidan.
@@ -101,6 +102,14 @@ namespace UserInterface.Controllers
                 }
                 return View();
             }
+        }
+
+        [HttpPost]
+        public void LogoutButton()
+        {
+            var sessionId = Request.Cookies["SessionId"];
+            _loginUserService.LogoutUser(sessionId);
+            Response.Cookies.Delete("SessionId");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

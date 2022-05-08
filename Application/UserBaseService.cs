@@ -7,29 +7,24 @@ namespace Application
     public class UserBaseService : IUserBaseService
     {
         private readonly IUserRolesRepository _repository;
+        public IEnumerable<Roles> roles { get; init; }
+        private Dictionary<string, UserSession> activeSessions;
+        // TODO: Kanske kan ha activeSessions som "internal set" om man implementerar en annan service? Tror inte något behöver sättas av middleware utan bara av en annan service? 
+        // TODO: System.Collections.Concurrent. 
 
         public UserBaseService(IUserRolesRepository repository)
         {
             _repository = repository;
             // TODO: Hämtar alla roller från repository.
                 // Måste ske genom DI (Startup.cs) på något sätt..
-
-            allRoles = _repository.ReadAllRoles();
+            activeSessions = new Dictionary<string, UserSession>();
+            roles = _repository.ReadAllRoles();
         }
 
-        public IEnumerable<Roles> allRoles { get; init; }
-        // TODO: Kolla om man kan ha "private set" eller "init". Vet inte ifall detta göt någon skillnad alls på en collection i slutändan..
-        /* public List<UserSession> activeSessions { get; private set; } */
-        /* private List<UserSession> activeSessions = new List<UserSession>(); */
-        private Dictionary<string, UserSession> activeSessions = new Dictionary<string, UserSession>();
-        // TODO: Kanske kan ha activeSessions som "internal set" om man implementerar en annan service? Tror inte något behöver sättas av middleware utan bara av en annan service? 
-        // TODO: Använd inte en List utan något där man kan ha ett index så det går snabbare att leta upp allt.
-            // Lägg sessionId som index och UserSession som andra typen i denna collection?
-        // TODO: System.Collections.Concurrent. 
 
-        public UserSession ReadSession(string sessionid)
+        public UserSession ReadSession(string sessionId)
         {
-            var userSession = activeSessions[sessionid];
+            var userSession = activeSessions[sessionId];
             return userSession;
             // TODO: Kanske räcker att man returnerar en UserSession istället för hela listan om man kan ta en input-parameter?
                 // Problemet är att jag använder activeSession-listan för att ta reda på vem som är inloggad.
@@ -45,12 +40,9 @@ namespace Application
             activeSessions.Add(usersession.sessionId, usersession);
         }
 
-        public void RemoveSession()
+        public void RemoveSession(string sessionId)
         {
-            // TODO
-            // Måste ha en input-paramete i metoden.
-            // Måste föst leta upp vilket Id som används.
-                // Antingen om man skickar med det i cookien eller om man letar upp utifrån det sessionId som användaren har i sin cookie.
+            activeSessions.Remove(sessionId);
         }
     }
 }

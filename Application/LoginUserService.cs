@@ -43,9 +43,9 @@ namespace Application
             return null;
         }
 
-        public void LogoutUser(Account account)
+        public void LogoutUser(string sessionId)
         {
-          // Logic for logout here..
+            _userBaseService.RemoveSession(sessionId);
         }
     }
 }
