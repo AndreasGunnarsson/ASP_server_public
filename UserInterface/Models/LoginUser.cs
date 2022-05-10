@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace UserInterface.Models
 {
-    /// <summary>ViewModel used to login a user.</summary>
+    /// <summary>ViewModel used during login of a user.</summary>
     public class LoginUser 
     {
         [FromForm]

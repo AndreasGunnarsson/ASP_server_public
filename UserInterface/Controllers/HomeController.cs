@@ -5,6 +5,8 @@ using UserInterface.Models;
 using Core.Entities;
 using Core.Interfaces;
 using Microsoft.AspNetCore.Http;
+using System.Linq;
+using System;
 
 namespace UserInterface.Controllers
 {
@@ -13,33 +15,85 @@ namespace UserInterface.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly ICreateUserService _createUserService;
         private readonly ILoginUserService _loginUserService;
-        /* private readonly IUserBaseService _userBaseService; */ 
+        private readonly ICreateArticleService _createArticleService;
 
-        /* public HomeController(ILogger<HomeController> logger, IAppDb db, IUserBaseService ubs) */
-        public HomeController(ILogger<HomeController> logger, ICreateUserService createuserservice, ILoginUserService loginuserservice)
+        public HomeController(ILogger<HomeController> logger, ICreateUserService createUserService, ILoginUserService loginUserService, ICreateArticleService articleService)
         {
             _logger = logger;
-            _createUserService = createuserservice;
-            _loginUserService = loginuserservice;
+            _createUserService = createUserService;
+            _loginUserService = loginUserService;
+            _createArticleService = articleService;
         }
 
+        [HttpGet]
         public IActionResult Index()
         {
+            var articles = _createArticleService.ReadAllArticles();
+            var articlesModel = new UserInterface.Models.Article();
+            articlesModel.articles = articles;
+
+            return View(articlesModel);
+        }
+
+        [HttpGet]
+        public IActionResult Article(int? id)
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult CreateArticle(int? id)
+        {
+            if (id.HasValue)
+            {
+                var articles = _createArticleService.ReadAllArticles();
+                var singleArticle = articles.FirstOrDefault(x => x.Id == id);
+
+                if (singleArticle != null)
+                {
+                    var path = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+                    string lines = System.IO.File.ReadAllText($"{path}/ASP_server/UserInterface/Views/Shared/_{id.Value}.cshtml");
+                    var createArticle = new UserInterface.Models.CreateArticle() { Id = id.Value, Titleee = singleArticle.Title, Articleee = lines };
+                    return View(createArticle);
+                }
+            }
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult CreateArticle(CreateArticle article)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+
+            if (article.Id <= 0)
+            {
+                _createArticleService.CreateArticle(new ArticleTransfer() { Title = article.Titleee, Article = article.Articleee });
+            }
+            else if (article.Id > 0)
+            {
+                _createArticleService.UpdateArticle(new ArticleTransfer() { Id = article.Id, Title = article.Titleee, Article = article.Articleee });
+            }
             return View();
         }
 
         public IActionResult Privacy()
         {
-            /* ViewData["FFF"] = "HelloFFF"; */
-            /* ViewData["GGG"] = "HelloGGG"; */
-            return View();
+            var sessionId = Request.Cookies["SessionId"];
+            var userSession = _loginUserService.CheckLogin(sessionId);
+            if (userSession != null && userSession.userRole == 1)
+                return Ok("Successful auth. Role 1");
+            if (userSession != null && userSession.userRole == 2)
+                return View();
+            else
+                return NotFound("Authorization failed!");
         }
 
         [HttpGet]
         public IActionResult CreateUser()
         {
-            // Ska inte gå att köra om man redan är inloggad.
-            var cookie = Request.Cookies["SessionId"];          // Debug.
             return View();
         }
 
@@ -51,23 +105,9 @@ namespace UserInterface.Controllers
                 return View();
             }
 
-            else
-            {
-                AccountsTemp plainTextAccount = new AccountsTemp(model.UserName, model.Password);
-                _createUserService.CreateUser(plainTextAccount);
-                return View();
-                // Ska finnas form.
-                    // Användarnamn
-                    // Lösenord
-                    // Confirm password (vet inte ens om jag behöver hantera det här; hantera endast i JavaScript).
-                        // Submit ska inte fungera ifall password:et inte matchar; coolast vore realtids-check.
-                // Måste ta input-parametrar alternativt ett objekt.
-                // Använd sedan logik från Application-lagret.
-                // Ska inte gå att köra om man redan är inloggad (Behöver authorization-attribut).
-
-                // TODO: Skicka en till en View som confirmar att accountet är skapat.
-                // TODO: Läs om "over posting" ([Bind]).
-            }
+            AccountsTemp plainTextAccount = new AccountsTemp(model.UserName, model.Password);
+            _createUserService.CreateUser(plainTextAccount);
+            return View();
         }
 
         [HttpGet]
@@ -95,17 +135,13 @@ namespace UserInterface.Controllers
                     cookieOptions.HttpOnly = true;
                     cookieOptions.SameSite = SameSiteMode.Strict;
                     Response.Cookies.Append("SessionId", sessionId, cookieOptions);
-
-                    // TODO: Gå till en annan sida; t.ex. home efter lyckad inloggning.
-                        // Skriv ut vem som är inloggad högst upp i högra hörnet på sidan.
-                    /* return View(); */
                 }
                 return View();
             }
         }
 
         [HttpPost]
-        public void LogoutButton()
+        public void Logout()
         {
             var sessionId = Request.Cookies["SessionId"];
             _loginUserService.LogoutUser(sessionId);

@@ -18,6 +18,12 @@ namespace Application
             _userBaseService = userbaseservice;
         }
 
+        public UserSession CheckLogin(string sessionId)
+        {
+            var userSession = _userBaseService.CheckSessionId(sessionId);
+            return userSession;
+        }
+
         public string GenerateSessionHash()
         {
             var randomGenerator = RandomNumberGenerator.Create();

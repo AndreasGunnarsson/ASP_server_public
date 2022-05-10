@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace UserInterface.Models
 {
-    /// <summary>ViewModel used to create a new account.</summary>
+    /// <summary>ViewModel used when creating a new account.</summary>
     public class CreateUser
     {
         [FromForm]

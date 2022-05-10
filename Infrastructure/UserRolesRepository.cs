@@ -32,7 +32,7 @@ namespace Infrastructure
                 PwdSalt = account.PasswordSalt
             };
 
-            var testresult = _db.Connection.Execute(sql, parameters);       // TODO: Får man något tillbaka?
+            _db.Connection.Execute(sql, parameters);
         }
 
         public IEnumerable<Account> ReadAllAccounts()
@@ -48,9 +48,9 @@ namespace Infrastructure
         {
             string sql = "SELECT Name FROM Accounts";
 
-            var accountnames = _db.Connection.Query<AccountsNames>(sql);
+            var accountNames = _db.Connection.Query<AccountsNames>(sql);
 
-            return accountnames;
+            return accountNames;
         }
 
         public void UpdateAccount(Account account)

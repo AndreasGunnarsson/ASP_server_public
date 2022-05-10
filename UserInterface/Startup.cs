@@ -27,9 +27,14 @@ namespace UserInterface
             /* services.AddTransient<AppDb>(_ => new AppDb(Configuration["ConnectionStrings:Default"])); */
             /* services.AddTransient<IAppDb, AppDb>(_ => new AppDb(Configuration["ConnectionStrings:Default"])); */
             services.AddTransient<IAppDb, AppDb>(_ => new AppDb("server=localhost;user=testx;password=apa;Database=testdatabasex"));
+
+            services.AddTransient<IRepository, Repository>();
             services.AddTransient<IUserRolesRepository, UserRolesRepository>();
-            services.AddTransient<IPasswordManagementService, PasswordManagementService>();
+            services.AddTransient<IArticleRepository, ArticleRepository>();
+
+            services.AddTransient<ICreateArticleService, CreateArticleService>();
             services.AddSingleton<IUserBaseService, UserBaseService>();
+            services.AddTransient<IPasswordManagementService, PasswordManagementService>();
             services.AddTransient<ICreateUserService, CreateUserService>();
             services.AddTransient<ILoginUserService, LoginUserService>();
         }

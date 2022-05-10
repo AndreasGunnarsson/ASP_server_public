@@ -25,7 +25,6 @@ namespace Application
                     return false;
                 }
             }
-            /* allAccountNames.FirstOrDefault() */
             
             return true;
         }
@@ -39,5 +38,3 @@ namespace Application
         }
     }
 }
-
-// TODO: Flytta salt-geneering och alla settings till egna metoder för att få de på mer enhetliga ställen (då vi vill använda samma inställningar för argon när vi loggar in någon). Lägg som service i egen klass.

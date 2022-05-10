@@ -1,9 +1,17 @@
 ﻿<!DOCTYPE html>
+@model UserInterface.Models.Article
+
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "All articles";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">List</h1>
+    @foreach (var article in Model.articles)
+    {
+        <p>Id: @article.Id</p>
+        <p>Title: @article.Title</p>
+        <p>Created: @article.CreateDate</p>
+        <p>Edited: @article.EditDate</p>
+    }
 </div>

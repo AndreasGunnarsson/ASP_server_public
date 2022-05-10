@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+@model UserInterface.Models.CreateArticle
+
+@{
+    ViewData["Title"] = "Create Article";
+}
+
+<h1>Create Article</h1>
+
+<h4>Create Article</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CreateArticle">
+            <div class="form-group">
+                <label asp-for="Titleee" class="control-label"></label>
+                <input asp-for="Titleee" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Articleee" class="control-label"></label>
+                <textarea asp-for="Articleee" class="form-control">
+                @foreach (var line in Model.Articleee)
+                {
+                    @line
+                }
+                </textarea>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>

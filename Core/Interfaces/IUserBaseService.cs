@@ -7,7 +7,8 @@ namespace Core.Interfaces
     public interface IUserBaseService
     {
         IEnumerable<Roles> roles { get; }
-        UserSession ReadSession(string sessionId);
+        UserSession CheckSessionId(string sessionId);
+        /* bool CheckSessionId(string sessionId); */
         void AddSession(UserSession userSession);
         void RemoveSession(string sessionId);
     }

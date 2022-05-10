@@ -3,12 +3,11 @@ using Core.Entities;
 
 namespace Core.Interfaces
 {
-    public interface ICreateArticle
+    public interface ICreateArticleService
     {
-        void addArticle(Articles article);
-        void updateArticle(Articles article);
-        void addCategory(IEnumerable<ArticlesCategories> articlesCategories);       // En lista med articlecategories som skickas in för att lägga till kategorier till en artikel.
+        IEnumerable<Articles> ReadAllArticles();
+        void CreateArticle(ArticleTransfer article);
+        void UpdateArticle(ArticleTransfer article);
+        void AddCategory(IEnumerable<ArticlesCategories> articlesCategories);
     }
 }
-
-// För admin i syfte att skapa artiklar.

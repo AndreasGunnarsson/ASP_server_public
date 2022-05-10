@@ -10,7 +10,6 @@ namespace Application
 
         public AppDb(string connectionString)
         {
-            /* Console.WriteLine($"connectionString: {connectionString}"); */
             Connection = new MySqlConnection(connectionString);
         }
 

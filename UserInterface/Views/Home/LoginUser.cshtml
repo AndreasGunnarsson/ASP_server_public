@@ -27,7 +27,7 @@
                 <input type="submit" value="Login" class="btn btn-primary" />
             </div>
         </form>
-    <input id="Button1" type="button" value="Logout" onclick="Logout()" />
+        <input id="Button1" type="button" value="Logout" onclick="Logout()" />
     </div>
 </div>
 
@@ -35,7 +35,7 @@
 function Logout() {
     $.ajax({
         type: "POST",
-        url: '@Url.Action("LogoutButton", "Home")',
+        url: '@Url.Action("Logout", "Home")',
         async: true,
         success: function (msg) {
             ServiceSucceeded(msg);
