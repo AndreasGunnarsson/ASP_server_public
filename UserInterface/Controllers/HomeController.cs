@@ -38,6 +38,14 @@ namespace UserInterface.Controllers
         [HttpGet]
         public IActionResult Article(int? id)
         {
+            var articles = _createArticleService.ReadAllArticles();
+            var article = articles.Where(x => id.HasValue == true && x.Id == id.Value).FirstOrDefault();
+            if (article == null)
+            {
+                return NotFound("Article not found.");
+            }
+
+            ViewData["PartialView"] = id;
             return View();
         }
 

@@ -6,15 +6,11 @@ namespace Core.Interfaces
     /// <summary>Repository interface for roles and accounts.</summary>
     public interface IUserRolesRepository
     {
-        IEnumerable<Roles> ReadAllRoles();                                      // Används bara i koden och potentiellt av admin (om man listar alla användare). Borde finnas en annan metod än ReadAllAccounts som admin kan använda; behöver inte hämta alla lösenord.
+        IEnumerable<Roles> ReadAllRoles();
         void CreateAccount(Account account);
-        IEnumerable<Account> ReadAllAccounts();                                // Används för att jämföra lösenord vid inloggning. Behöver inte läsa Accounts från databasen någonannanstans då de aktiva finns i session-collectionen.
-        IEnumerable<AccountsNames> ReadAllAccountNames();                       // Används för att hämta alla konto-namn så att man kan jämföra dem när man skapar nytt konto.
-        void UpdateAccount(Account account);                                   // För att uppdaera lösnord och användarnamn.
+        IEnumerable<Account> ReadAllAccounts();
+        IEnumerable<AccountsNames> ReadAllAccountNames();
+        void UpdateAccount(Account account);
         void DeleteAccount(Account account);
     }
 }
-
-// TODO: Döp om till IAccountsRolesRepository.
-// TODO: Speciell entitet för att Accounts som inte skickar med password när man bara ska authentisera och hämta ut alla konton?
-    // Behöver kunna jämföra användarnamn så att inga duplicerade skapas.

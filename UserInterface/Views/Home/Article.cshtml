@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 @{
     ViewData["Title"] = "Article";
+    string partialView = $"_{@ViewData["PartialView"]}";
 }
 
-<h4>Article holder</h4>
-<partial name="_testpartial" />
+<h4>Article</h4>
+<partial name="@partialView" />

@@ -9,9 +9,12 @@
     <h1 class="display-4">List</h1>
     @foreach (var article in Model.articles)
     {
-        <p>Id: @article.Id</p>
-        <p>Title: @article.Title</p>
-        <p>Created: @article.CreateDate</p>
-        <p>Edited: @article.EditDate</p>
+        <a href="/Home/Article/@article.Id" style="text-decoration:none">
+            <div style="background-color:#ff0000">
+                <p>Title: @article.Title</p>
+                <p>Created: @article.CreateDate</p>
+                <p>Edited: @article.EditDate</p>
+            </div>
+        </a>
     }
 </div>
