@@ -33,6 +33,7 @@ namespace UserInterface
             services.AddTransient<IArticleRepository, ArticleRepository>();
 
             services.AddTransient<ICreateArticleService, CreateArticleService>();
+            services.AddTransient<ICommentsService, CommentsService>();
             services.AddSingleton<IUserBaseService, UserBaseService>();
             services.AddTransient<IPasswordManagementService, PasswordManagementService>();
             services.AddTransient<ICreateUserService, CreateUserService>();

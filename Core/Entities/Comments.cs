@@ -4,12 +4,12 @@ namespace Core.Entities
 {
     public class Comments
     {
-        int Id { get; set; }
-        string Comment { get; set; }
-        DateTime CreateDate { get; set; }
-        DateTime EditDate { get; set; }
-        int AccountsId { get; set; }
-        int CommentsId { get; set; }
-        int ArticlesId { get; set; }
+        public int Id { get; set; }
+        public string Comment { get; set; }
+        public DateTime CreateDate { get; set; }
+        public DateTime EditDate { get; set; }
+        public int AccountsId { get; set; }
+        public int? CommentsId { get; set; }
+        public int ArticlesId { get; set; }
     }
 }

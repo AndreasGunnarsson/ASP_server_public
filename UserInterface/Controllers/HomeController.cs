@@ -7,6 +7,7 @@ using Core.Interfaces;
 using Microsoft.AspNetCore.Http;
 using System.Linq;
 using System;
+using System.Collections.Generic;
 
 namespace UserInterface.Controllers
 {
@@ -16,13 +17,15 @@ namespace UserInterface.Controllers
         private readonly ICreateUserService _createUserService;
         private readonly ILoginUserService _loginUserService;
         private readonly ICreateArticleService _createArticleService;
+        private readonly ICommentsService _commentsService;
 
-        public HomeController(ILogger<HomeController> logger, ICreateUserService createUserService, ILoginUserService loginUserService, ICreateArticleService articleService)
+        public HomeController(ILogger<HomeController> logger, ICreateUserService createUserService, ILoginUserService loginUserService, ICreateArticleService articleService, ICommentsService commentsService)
         {
             _logger = logger;
             _createUserService = createUserService;
             _loginUserService = loginUserService;
             _createArticleService = articleService;
+            _commentsService = commentsService;
         }
 
         [HttpGet]
@@ -38,14 +41,58 @@ namespace UserInterface.Controllers
         [HttpGet]
         public IActionResult Article(int? id)
         {
+            if (!id.HasValue)
+            {
+                return NotFound("Article not found.");
+            }
+
+            var sessionId = Request.Cookies["SessionId"];
+            var userSession = _loginUserService.CheckLogin(sessionId);
+
             var articles = _createArticleService.ReadAllArticles();
-            var article = articles.Where(x => id.HasValue == true && x.Id == id.Value).FirstOrDefault();
+            var article = articles.FirstOrDefault(x => x.Id == id.Value);
             if (article == null)
             {
                 return NotFound("Article not found.");
             }
 
-            ViewData["PartialView"] = id;
+            var comments = _commentsService.ReadArticleComments(id.Value);
+
+            ViewData["Comments"]  = new List<Comments>(comments);
+            ViewData["Article"]  = article;
+            ViewData["isLoggedIn"]  = userSession != null ? true : false;
+
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Article(ArticleComment comment)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var sessionId = Request.Cookies["SessionId"];
+            var userSession = _loginUserService.CheckLogin(sessionId);
+            if (userSession != null)
+            {
+                bool canCreate = false;
+                if (comment.CommentsIdzz.HasValue)
+                    canCreate = _commentsService.CanCreateComment(comment.Articleeeid, comment.CommentsIdzz.Value);
+                else
+                    canCreate = _commentsService.CanCreateComment(comment.Articleeeid);
+                if (canCreate)
+                {
+                    _commentsService.CreateComment(new Comments() {
+                        Comment = comment.Commentzz,
+                        AccountsId = userSession.userId,
+                        ArticlesId = comment.Articleeeid,
+                        CommentsId = comment.CommentsIdzz.HasValue ? comment.CommentsIdzz.Value : null
+                    });
+                }
+            }
+
             return View();
         }
 

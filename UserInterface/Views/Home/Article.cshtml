@@ -1,8 +1,93 @@
 <!DOCTYPE html>
+@model UserInterface.Models.ArticleComment
+
 @{
     ViewData["Title"] = "Article";
-    string partialView = $"_{@ViewData["PartialView"]}";
+    var comments = ViewData["Comments"] as List<Core.Entities.Comments>;
+    var article = ViewData["Article"] as Core.Entities.Articles;
+    var isLoggedIn = (bool)ViewData["isLoggedIn"];
+    string partialView = $"_{article.Id}";
 }
 
-<h4>Article</h4>
-<partial name="@partialView" />
+<h4>@article.Title</h4>
+<div style="display:flex; flex-direction:row; justify-content:space-between">
+    <p>@article.CreateDate</p>
+    <p>@article.EditDate</p>
+</div>
+
+<div style="background-color:#aa0000">
+    <partial name="@partialView" />
+</div>
+
+<h4>Comments</h4>
+
+@if (isLoggedIn)
+{
+    <div id="formContainer">
+        <form id="commentForm" asp-action="Article">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div>
+                <label asp-for="Commentzz"></label>
+                <input asp-for="Commentzz" />
+                <span asp-validation-for="Commentzz" class="text-danger"></span>
+            </div>
+            <div>
+                <input asp-for="CommentsIdzz" value="" />
+            </div>
+            <div>
+                <input asp-for="Articleeeid" value="@article.Id"/>
+            </div>
+            <div>
+                <input type="submit" value="Add comment" />
+            </div>
+                <button type="button" onclick="Cancel(event)">Cancel</button>
+        </form>
+    </div>
+}
+
+<div id="commentscontainer" style="background-color:#0000aa">
+    @foreach (var comment in comments)
+    {
+        <div data-commentsid="@comment.CommentsId" id="@comment.Id" style="background-color:#aa0000;margin:1rem">
+            <p>@comment.CreateDate</p>
+            <p>@comment.Comment</p>
+            @{if (isLoggedIn)
+              {<button onclick="SelectedComment(this)">Answer</button>}
+            }
+        </div>
+    }
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', SortComments());
+
+    function SortComments()
+    {
+        var container = [].slice.call(document.getElementById('commentscontainer').children);
+        container.forEach(element => {
+            if (element.dataset.commentsid > 0)
+            {
+                    const parentElement = document.getElementById(element.dataset.commentsid);
+                    parentElement.append(element);
+            }
+        });
+    }
+
+    function SelectedComment(button)
+    {
+        var element = document.getElementById('CommentsIdzz');
+        var formContainer = document.getElementById('commentForm');
+        var comment = document.getElementById(button.parentElement.id);
+        comment.insertAdjacentElement('beforeend', formContainer);
+        element.value = button.parentElement.id;
+    }
+
+    function Cancel(event)
+    {
+        var selected = document.getElementById('CommentsIdzz');
+        selected.value = "";
+        var element = document.getElementById('formContainer');
+        var formContainer = document.getElementById('commentForm');
+        element.append(formContainer);
+    }
+</script>

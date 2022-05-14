@@ -7,7 +7,7 @@ namespace Core.Interfaces
     {
         void CreateComment(Comments comment);
         IEnumerable<Comments> ReadAllComments();
-        IEnumerable<Comments> ReadCommentsByAarticlesId(Articles articleId);
+        IEnumerable<Comments> ReadCommentsByAarticlesId(int articleId);
         IEnumerable<Comments> ReadCommentsByAccountsId(Account accountId);
         void UpdateComment(Comments comment);
         void DeleteComment(Comments comment);
