@@ -9,9 +9,9 @@ namespace Core.Interfaces
         bool CanCreateComment(int articleId, int? commentId = null);
         void CreateComment(Comments comment);
         IEnumerable<Comments> ReadLastComments();
-        IEnumerable<Comments> ReadArticleComments(int articleId);
-        IEnumerable<Comments> ReadAccountComments(Account accountId);
+        IEnumerable<CommentWithName> ReadArticleComments(int articleId);
+        IEnumerable<Comments> ReadAccountComments(int accountId);
         void UpdateComment(Comments comment);
-        void DeleteComment(Comments comment);
+        void DeleteComment(int commentId, int accountId);
     }
 }

@@ -39,7 +39,7 @@ namespace UserInterface.Controllers
         }
 
         [HttpGet]
-        public IActionResult Article(int? id)
+        public IActionResult Article([FromRoute]int? id)
         {
             if (!id.HasValue)
             {
@@ -58,7 +58,7 @@ namespace UserInterface.Controllers
 
             var comments = _commentsService.ReadArticleComments(id.Value);
 
-            ViewData["Comments"]  = new List<Comments>(comments);
+            ViewData["Comments"]  = new List<CommentWithName>(comments);
             ViewData["Article"]  = article;
             ViewData["isLoggedIn"]  = userSession != null ? true : false;
 
@@ -70,7 +70,7 @@ namespace UserInterface.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest();
+                return BadRequest("Bad post");
             }
 
             var sessionId = Request.Cookies["SessionId"];
@@ -93,7 +93,7 @@ namespace UserInterface.Controllers
                 }
             }
 
-            return View();
+            return Ok("Article OK!");
         }
 
         [HttpGet]
@@ -134,6 +134,7 @@ namespace UserInterface.Controllers
             return View();
         }
 
+        [HttpGet]
         public IActionResult Privacy()
         {
             var sessionId = Request.Cookies["SessionId"];
@@ -171,6 +172,58 @@ namespace UserInterface.Controllers
             return View();
         }
 
+        [HttpGet]
+        public IActionResult UserSettings()
+        {
+            var sessionId = Request.Cookies["SessionId"];
+            var userSession = _loginUserService.CheckLogin(sessionId);
+            if (userSession != null)
+            {
+                var comments = _commentsService.ReadAccountComments(userSession.userId);
+                ViewData["Comments"]  = new List<Comments>(comments);
+                return View();
+            }
+            else
+                return NotFound("No session found!");
+
+        }
+
+        [HttpPost]
+        public IActionResult UpdateUserPassword(UpdatePassword updatePassword)
+        {
+            if (!ModelState.IsValid)
+            {
+                return NotFound("NotFound");
+            }
+
+            var sessionId = Request.Cookies["SessionId"];
+            var userSession = _loginUserService.CheckLogin(sessionId);
+            if (userSession != null)
+            {
+                _createUserService.UpdatePassword(updatePassword.OldPassword, updatePassword.NewPassword, userSession.userId);
+            }
+
+            return NotFound("NotFound");
+        }
+
+        [HttpPost]
+        public IActionResult RemoveComment([FromQuery]int commentId)
+        {
+            if (!ModelState.IsValid)
+            {
+                return NotFound("fail");
+            }
+
+            var sessionId = Request.Cookies["SessionId"];
+            var userSession = _loginUserService.CheckLogin(sessionId);
+            if (userSession != null)
+            {
+                _commentsService.DeleteComment(commentId, userSession.userId);
+            }
+
+            return NotFound("NotFound");
+        }
+
         [HttpPost]
         public IActionResult LoginUser(LoginUser model)
         {
@@ -179,20 +232,17 @@ namespace UserInterface.Controllers
                 return View(); 
             }
 
-            else
-            {
-                AccountsTemp accountLogin = new AccountsTemp(model.UserName, model.Password);
-                var sessionId = _loginUserService.LoginUser(accountLogin);
+            AccountsTemp accountLogin = new AccountsTemp(model.UserName, model.Password);
+            var sessionId = _loginUserService.LoginUser(accountLogin);
 
-                if (sessionId != null)
-                {
-                    CookieOptions cookieOptions = new CookieOptions();
-                    cookieOptions.HttpOnly = true;
-                    cookieOptions.SameSite = SameSiteMode.Strict;
-                    Response.Cookies.Append("SessionId", sessionId, cookieOptions);
-                }
-                return View();
+            if (sessionId != null)
+            {
+                CookieOptions cookieOptions = new CookieOptions();
+                cookieOptions.HttpOnly = true;
+                cookieOptions.SameSite = SameSiteMode.Strict;
+                Response.Cookies.Append("SessionId", sessionId, cookieOptions);
             }
+            return View();
         }
 
         [HttpPost]
@@ -200,6 +250,18 @@ namespace UserInterface.Controllers
         {
             var sessionId = Request.Cookies["SessionId"];
             _loginUserService.LogoutUser(sessionId);
+            Response.Cookies.Delete("SessionId");
+        }
+
+        [HttpPost]
+        public void RemoveUser()
+        {
+            var sessionId = Request.Cookies["SessionId"];
+            var userSession = _loginUserService.CheckLogin(sessionId);
+            if (userSession != null)
+            {
+                _createUserService.RemoveUser(userSession.userId);
+            }
             Response.Cookies.Delete("SessionId");
         }
 

@@ -34,12 +34,9 @@
 <script>
 function Logout() {
     $.ajax({
-        type: "POST",
+        method: "POST",
         url: '@Url.Action("Logout", "Home")',
         async: true,
-        success: function (msg) {
-            ServiceSucceeded(msg);
-        },
         error: function () {
             return "error";
         }

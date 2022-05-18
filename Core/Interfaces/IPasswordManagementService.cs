@@ -7,6 +7,6 @@ namespace Core.Interfaces
     {
         byte[] GenerateSalt();
         byte[] GeneratePassword(string password, byte[] salt);
-        AccountsRoles ValidatePassword(AccountsTemp account);           // Used when logging in to check the validity of a password for a specific account (based on the username).
+        AccountsRoles ValidatePassword(AccountsTemp accountTemp, int? accountId = null);
     }
 }

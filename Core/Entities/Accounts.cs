@@ -3,7 +3,7 @@ namespace Core.Entities
     /// <summary>Entity that represents an account.</summary>
     public class Account
     {
-        public int Id { get; }
+        public int Id { get; init; }
         public string Name { get; init; }
         public byte[] PasswordHash { get; init; }
         public byte[] PasswordSalt { get; init; }
@@ -11,6 +11,14 @@ namespace Core.Entities
         // TODO: RolesId as uint?
 
         public Account() { }
+
+        public Account(int id, string name, byte[] passwordHash, byte[] passwordSalt)
+        {
+            Id = id;
+            Name = name;
+            PasswordHash = passwordHash;
+            PasswordSalt = passwordSalt;
+        }
 
         public Account(string name, byte[] passwordHash, byte[] passwordSalt)
         {

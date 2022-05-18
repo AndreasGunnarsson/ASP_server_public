@@ -11,6 +11,6 @@ namespace Core.Interfaces
         IEnumerable<Account> ReadAllAccounts();
         IEnumerable<AccountsNames> ReadAllAccountNames();
         void UpdateAccount(Account account);
-        void DeleteAccount(Account account);
+        void DeleteAccount(int accountId);
     }
 }

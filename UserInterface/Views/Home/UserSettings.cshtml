@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+@model UserInterface.Models.UpdatePassword
+
+@{
+    ViewData["Title"] = "User settings";
+    var comments = ViewData["Comments"] as List<Core.Entities.Comments>;
+}
+
+<h1>User settings</h1>
+
+<h4>User settings</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="UpdateUserPassword">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="OldPassword" class="control-label"></label>
+                <input asp-for="OldPassword" class="form-control" />
+                <span asp-validation-for="OldPassword" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NewPassword" class="control-label"></label>
+                <input asp-for="NewPassword" class="form-control" />
+                <span asp-validation-for="NewPassword" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="confirmNewPassword" class="control-label">Confirm new password</label>
+                <input id="confirmNewPassword" class="form-control" />
+                <span class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+
+        <button id="openModalButton" onclick="OpenModal()" class="btn btn-primary" data-target="myModal" data-toggle="modal">Delete account</button>
+
+        <h4>Comments</h4>
+
+        <div id="commentscontainer" style="background-color:#0000aa">
+            @foreach (var comment in comments)
+            {
+                <div style="background-color:#aa0000;margin:1rem">
+                    <p>@comment.CreateDate</p>
+                    <p>@comment.Comment</p>
+                    <button id="@comment.Id" onclick="RemoveComment(this.id)">Remove</button>
+                </div>
+            }
+        </div>
+
+        <div class="modal fade" id="deleteAccountModal">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Delete account</h4>
+                        <button type="button" class="close" data-dismiss="modal">x</button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Confirm deletion af account</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" onclick="RemoveUser()" class="btn btn-primary">Confirm</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function OpenModal()
+    {
+        $("#deleteAccountModal").modal('show');
+    }
+
+    function RemoveUser() {
+        $.ajax({
+            method: "POST",
+            url: '@Url.Action("RemoveUser", "Home")',
+            async: true,
+            error: function () {
+                return "error";
+            }
+        });
+    }
+
+    function RemoveComment(idToRemove) {
+        console.log("idToRemove: ", idToRemove);
+        let createUrl = `@Url.Action("RemoveComment", "Home")?commentId=${idToRemove}`;
+        console.log("createdUrl: ", createUrl);
+        $.ajax({
+            method: "POST",
+            url: createUrl,
+            async: true,
+            error: function () {
+                return "error";
+            }
+        });
+    }
+</script>

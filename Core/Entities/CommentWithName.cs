@@ -2,7 +2,7 @@ using System;
 
 namespace Core.Entities
 {
-    public class Comments
+    public class CommentWithName
     {
         public int Id { get; set; }
         public string Comment { get; set; }
@@ -10,6 +10,6 @@ namespace Core.Entities
         public DateTime EditDate { get; set; }
         public int? AccountsId { get; set; }
         public int? CommentsId { get; set; }
-        public int ArticlesId { get; set; }
+        public string Name { get; set; }
     }
 }

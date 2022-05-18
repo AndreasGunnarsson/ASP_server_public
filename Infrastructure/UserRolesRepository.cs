@@ -55,12 +55,24 @@ namespace Infrastructure
 
         public void UpdateAccount(Account account)
         {
+            string sql = "UPDATE Accounts SET PasswordHash = @accountHash, PasswordSalt = @accountSalt WHERE Id = @accountId";
+            var parameters = new {
+                accountHash = account.PasswordHash,
+                accountSalt = account.PasswordSalt,
+                accountId = account.Id
+            };
+
+            _db.Connection.Execute(sql, parameters);
         }
 
-        public void DeleteAccount(Account account)
+        public void DeleteAccount(int accountId)
         {
+            string sql = "DELETE FROM Accounts WHERE Id = @accountIdToDelete";
+            var parameters = new {
+                accountIdToDelete = accountId
+            };
+
+            _db.Connection.Execute(sql, parameters);
         }
     }
 }
-
-// TODO: Behöver man try/catch för att se så att uppkopplingen gick rätt till? "using" som alternativ?

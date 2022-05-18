@@ -38,12 +38,17 @@ namespace Application
             return generatedPasswordHash;
         }
 
-        public AccountsRoles ValidatePassword(AccountsTemp accountTemp)
+        public AccountsRoles ValidatePassword(AccountsTemp accountTemp, int? accountId = null)
         {
             byte[] passwordBytes = Encoding.ASCII.GetBytes(accountTemp.Password);
             var accounts = _repository.ReadAllAccounts();
 
-            Account account = accounts.FirstOrDefault(x => x.Name == accountTemp.Name);
+            Account account = null;
+            if (accountId.HasValue)
+                account = accounts.FirstOrDefault(x => x.Id == accountId);
+            else
+                account = accounts.FirstOrDefault(x => x.Name == accountTemp.Name);
+
             if (account != null)
             {
                 var generatedPassword = GeneratePassword(accountTemp.Password, account.PasswordSalt);

@@ -7,9 +7,9 @@ namespace Core.Interfaces
     {
         void CreateComment(Comments comment);
         IEnumerable<Comments> ReadAllComments();
-        IEnumerable<Comments> ReadCommentsByAarticlesId(int articleId);
-        IEnumerable<Comments> ReadCommentsByAccountsId(Account accountId);
+        IEnumerable<CommentWithName> ReadCommentsByAarticlesId(int articleId);
+        IEnumerable<Comments> ReadCommentsByAccountsId(int accountId);
         void UpdateComment(Comments comment);
-        void DeleteComment(Comments comment);
+        void DeleteComment(int commentId);
     }
 }

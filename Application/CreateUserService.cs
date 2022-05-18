@@ -36,5 +36,23 @@ namespace Application
             Account accountToDatebase = new Account(account.Name, passwordHash, passwordSalt);
             _repository.CreateAccount(accountToDatebase);
         }
+
+        public void UpdatePassword(string oldPassword, string newPassword, int accountId)
+        {
+            var tempAccount = new AccountsTemp("", oldPassword);
+            var accountWithRole = _passwordManagementService.ValidatePassword(tempAccount, accountId);
+            if (accountWithRole != null)
+            {
+                var passwordSalt = _passwordManagementService.GenerateSalt();
+                var passwordHash = _passwordManagementService.GeneratePassword(newPassword, passwordSalt);
+                Account accountToDatebase = new Account(accountId, "", passwordHash, passwordSalt);
+                _repository.UpdateAccount(accountToDatebase);
+            }
+        }
+
+        public void RemoveUser(int userId)
+        {
+            _repository.DeleteAccount(userId);
+        }
     }
 }

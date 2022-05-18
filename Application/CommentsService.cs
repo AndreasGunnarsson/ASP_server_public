@@ -9,11 +9,13 @@ namespace Application
     {
         private readonly IRepository _repository;
         private readonly IArticleRepository _articleRepository;
+        private readonly IUserRolesRepository _userRolesRepository;
 
-        public CommentsService(IRepository repository, IArticleRepository articleRepository)
+        public CommentsService(IRepository repository, IArticleRepository articleRepository, IUserRolesRepository userRolesRepository)
         {
             _repository = repository;
             _articleRepository = articleRepository;
+            _userRolesRepository = userRolesRepository;
         }
 
         public bool CanCreateComment(int articleId, int? commentId = null)
@@ -45,22 +47,42 @@ namespace Application
             return null;
         }
 
-        public IEnumerable<Comments> ReadArticleComments(int articleId)
+        public IEnumerable<CommentWithName> ReadArticleComments(int articleId)
         {
             return _repository.ReadCommentsByAarticlesId(articleId);
         }
 
-        public IEnumerable<Comments> ReadAccountComments(Account accountId)
+        public IEnumerable<Comments> ReadAccountComments(int accountId)
         {
-            return null;
+            return _repository.ReadCommentsByAccountsId(accountId);
         }
 
         public void UpdateComment(Comments comment)
         {
         }
 
-        public void DeleteComment(Comments comment)
+        public void DeleteComment(int commentId, int accountId)
         {
+            var comments = _repository.ReadAllComments();
+            bool isCommentAvailable = comments.Any(x => x.Id == commentId && x.AccountsId == accountId);
+            if (isCommentAvailable)
+            {
+                bool hasReply = comments.Any(x => x.CommentsId == commentId);
+                if (hasReply)
+                {
+                    var deletedComment = new Comments() {
+                        Id = commentId,
+                        Comment = "[DELETED]",
+                        AccountsId = null
+                    };
+
+                    _repository.UpdateComment(deletedComment);
+                }
+                else
+                {
+                    _repository.DeleteComment(commentId);
+                }
+            }
         }
     }
 }

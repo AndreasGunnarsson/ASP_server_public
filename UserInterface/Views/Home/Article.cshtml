@@ -3,7 +3,7 @@
 
 @{
     ViewData["Title"] = "Article";
-    var comments = ViewData["Comments"] as List<Core.Entities.Comments>;
+    var comments = ViewData["Comments"] as List<Core.Entities.CommentWithName>;
     var article = ViewData["Article"] as Core.Entities.Articles;
     var isLoggedIn = (bool)ViewData["isLoggedIn"];
     string partialView = $"_{article.Id}";
@@ -49,8 +49,13 @@
     @foreach (var comment in comments)
     {
         <div data-commentsid="@comment.CommentsId" id="@comment.Id" style="background-color:#aa0000;margin:1rem">
-            <p>@comment.CreateDate</p>
-            <p>@comment.Comment</p>
+            <p style="color:#ffffff">@comment.CreateDate</p>
+            <p style="color:#ffffff">@comment.Comment</p>
+            @{if (comment.AccountsId.HasValue)
+            { <p style="color:#ffffff">@comment.Name</p> }
+            else
+            { <p style="color:#ff0000">[DELETED USER]</p> }
+            }
             @{if (isLoggedIn)
               {<button onclick="SelectedComment(this)">Answer</button>}
             }
