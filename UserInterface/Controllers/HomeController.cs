@@ -6,7 +6,6 @@ using Core.Entities;
 using Core.Interfaces;
 using Microsoft.AspNetCore.Http;
 using System.Linq;
-using System;
 using System.Collections.Generic;
 
 namespace UserInterface.Controllers
@@ -57,9 +56,15 @@ namespace UserInterface.Controllers
             }
 
             var comments = _commentsService.ReadArticleComments(id.Value);
+            string lines = _createArticleService.ReadArticleFile(id.Value);
+            if (lines == null)
+            {
+                return NotFound("Could not read article file.");
+            }
 
             ViewData["Comments"]  = new List<CommentWithName>(comments);
             ViewData["Article"]  = article;
+            ViewData["articleText"] = lines;
             ViewData["isLoggedIn"]  = userSession != null ? true : false;
 
             return View();
@@ -106,8 +111,11 @@ namespace UserInterface.Controllers
 
                 if (singleArticle != null)
                 {
-                    var path = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-                    string lines = System.IO.File.ReadAllText($"{path}/ASP_server/UserInterface/Views/Shared/_{id.Value}.cshtml");
+                    string lines = _createArticleService.ReadArticleFile(id.Value);
+                    if (lines == null)
+                    {
+                        return NotFound("Could not read article file.");
+                    }
                     var createArticle = new UserInterface.Models.CreateArticle() { Id = id.Value, Titleee = singleArticle.Title, Articleee = lines };
                     return View(createArticle);
                 }

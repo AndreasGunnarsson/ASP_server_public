@@ -19,6 +19,19 @@ namespace Application
             return _articleRepository.ReadAllArticles();
         }
 
+        public string ReadArticleFile(int id)
+        {
+            var path = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            bool isFileExist = System.IO.File.Exists($"{path}/ASP_server/{id}.html");
+            if (isFileExist)
+            {
+                string lines = System.IO.File.ReadAllText($"{path}/ASP_server/{id}.html");
+                return lines;
+            }
+            else
+                return null;
+        }
+
         public void CreateArticle(ArticleTransfer article)
         {
             var newArticle = new Articles() {
@@ -27,7 +40,7 @@ namespace Application
             var newId = _articleRepository.CreateArticle(newArticle);
 
             var path = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-            System.IO.File.WriteAllText($"{path}/ASP_server/UserInterface/Views/Shared/_{newId}.cshtml", article.Article);
+            System.IO.File.WriteAllText($"{path}/ASP_server/{newId}.html", article.Article);
         }
 
         public void UpdateArticle(ArticleTransfer article)
@@ -35,7 +48,7 @@ namespace Application
             if (!String.IsNullOrWhiteSpace(article.Title))
             {
                 var path = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-                System.IO.File.WriteAllText($"{path}/ASP_server/UserInterface/Views/Shared/_{article.Id}.cshtml", article.Article);
+                System.IO.File.WriteAllText($"{path}/ASP_server/{article.Id}.html", article.Article);
                 var newArticle = new Articles() {
                     Id = article.Id,
                     Title = article.Title,

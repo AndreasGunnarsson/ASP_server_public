@@ -5,8 +5,8 @@
     ViewData["Title"] = "Article";
     var comments = ViewData["Comments"] as List<Core.Entities.CommentWithName>;
     var article = ViewData["Article"] as Core.Entities.Articles;
+    string articleText = (string)ViewData["articleText"];
     var isLoggedIn = (bool)ViewData["isLoggedIn"];
-    string partialView = $"_{article.Id}";
 }
 
 <h4>@article.Title</h4>
@@ -16,7 +16,7 @@
 </div>
 
 <div style="background-color:#aa0000">
-    <partial name="@partialView" />
+    <div>@Html.Raw(articleText)</div>
 </div>
 
 <h4>Comments</h4>
