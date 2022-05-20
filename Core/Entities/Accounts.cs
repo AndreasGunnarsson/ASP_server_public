@@ -8,7 +8,6 @@ namespace Core.Entities
         public byte[] PasswordHash { get; init; }
         public byte[] PasswordSalt { get; init; }
         public int RolesId { get; }
-        // TODO: RolesId as uint?
 
         public Account() { }
 

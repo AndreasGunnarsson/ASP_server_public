@@ -17,7 +17,5 @@ namespace Core.Entities
             userId = userid;
             userRole = userrole;
         }
-
-        // Är detta en DTO? Känns som att det är lite mellan ett "value object" (immutable) och en "entiet"..
     }
 }

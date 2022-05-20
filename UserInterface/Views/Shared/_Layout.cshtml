@@ -1,4 +1,13 @@
 ﻿<!DOCTYPE html>
+@using Core.Interfaces;
+@inject IUserBaseService manager;
+
+@{
+    var errorMessage = (string)ViewData["ErrorMessage"];
+    var infoMessage = (string)ViewData["InfoMessage"];
+}
+
+
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -29,12 +38,25 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="LoginUser">Login</a>
                         </li>
+                        @{
+                            var cookie = Context.Request.Cookies["SessionId"];
+                            if (cookie != null)
+                            {
+                                var session = manager.CheckSessionId(cookie);
+                                if (session != null && session.userRole == 1)
+                                {
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="CreateArticle">Create Article</a>
                         </li>
+                                }
+                                if (session != null && session.userRole >= 1)
+                                {
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="UserSettings">User Settings</a>
                         </li>
+                                }
+                            }
+                        }
                     </ul>
                 </div>
             </div>
@@ -45,6 +67,12 @@
             @RenderBody()
         </main>
     </div>
+    @{if (!String.IsNullOrEmpty(infoMessage))
+        { <div style="background-color: #00ff00">@infoMessage</div> }
+    }
+    @{if (!String.IsNullOrEmpty(errorMessage))
+        { <div style="background-color: #ff0000">@errorMessage</div> }
+    }
 
     <footer class="border-top footer text-muted">
         <div class="container">

@@ -4,7 +4,6 @@ namespace Core.Entities
     public class AccountsRoles
     {
         public int Id { get; }
-        /* string Name { get; set; } */
         public int RolesId { get; }
 
         public AccountsRoles(int id, int rolesid)
@@ -14,6 +13,3 @@ namespace Core.Entities
         }
     }
 }
-
-// TODO: Ska kanske inte vara ett value object då den innehåller ett id?
-// Klass som används för inloggade användare; behöver inte ha information om lösenord men har information om specifik roll.

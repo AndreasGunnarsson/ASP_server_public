@@ -249,7 +249,13 @@ namespace UserInterface.Controllers
                 cookieOptions.HttpOnly = true;
                 cookieOptions.SameSite = SameSiteMode.Strict;
                 Response.Cookies.Append("SessionId", sessionId, cookieOptions);
+                ViewData["InfoMessage"] = "Login successful";
             }
+            else
+            {
+                ViewData["ErrorMessage"] = "Login failed";
+            }
+
             return View();
         }
 
