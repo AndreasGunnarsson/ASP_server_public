@@ -68,10 +68,14 @@
         </main>
     </div>
     @{if (!String.IsNullOrEmpty(infoMessage))
-        { <div style="background-color: #00ff00">@infoMessage</div> }
+        { <div id="info" style="background-color: #00ff00">@infoMessage</div> }
+        else
+        { <div id="info" style="background-color: #00ff00; visibility: collapse"></div> }
     }
     @{if (!String.IsNullOrEmpty(errorMessage))
-        { <div style="background-color: #ff0000">@errorMessage</div> }
+        { <div id="error" style="background-color: #ff0000">@errorMessage</div> }
+        else
+        { <div id="error" style="background-color: #ff0000; visibility: collapse"></div> }
     }
 
     <footer class="border-top footer text-muted">

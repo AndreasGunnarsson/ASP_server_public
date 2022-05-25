@@ -7,7 +7,7 @@ namespace Core.Interfaces
     {
         void CreateUser(AccountsTemp account);
         bool IsAccountNameAvailable(string username);
-        void UpdatePassword(string oldPassword, string newPassword, int accountId);
+        bool UpdatePassword(string oldPassword, string newPassword, int accountId);
         void RemoveUser(int userId);
     }
 }

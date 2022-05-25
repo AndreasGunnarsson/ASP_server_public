@@ -15,7 +15,7 @@ namespace UserInterface.Models
         
         [FromForm]
         [Required(ErrorMessage = "Password cannot be empty.")]
-        [StringLength(100, ErrorMessage = "The password cannot exceed 100 characters.")]
+        [StringLength(50, ErrorMessage = "The password cannot exceed 50 characters.")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
     }

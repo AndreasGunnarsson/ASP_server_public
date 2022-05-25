@@ -72,8 +72,8 @@
         container.forEach(element => {
             if (element.dataset.commentsid > 0)
             {
-                    const parentElement = document.getElementById(element.dataset.commentsid);
-                    parentElement.append(element);
+                const parentElement = document.getElementById(element.dataset.commentsid);
+                parentElement.append(element);
             }
         });
     }

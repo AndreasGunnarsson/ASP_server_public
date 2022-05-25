@@ -37,7 +37,7 @@ namespace Application
             _repository.CreateAccount(accountToDatebase);
         }
 
-        public void UpdatePassword(string oldPassword, string newPassword, int accountId)
+        public bool UpdatePassword(string oldPassword, string newPassword, int accountId)
         {
             var tempAccount = new AccountsTemp("", oldPassword);
             var accountWithRole = _passwordManagementService.ValidatePassword(tempAccount, accountId);
@@ -47,7 +47,9 @@ namespace Application
                 var passwordHash = _passwordManagementService.GeneratePassword(newPassword, passwordSalt);
                 Account accountToDatebase = new Account(accountId, "", passwordHash, passwordSalt);
                 _repository.UpdateAccount(accountToDatebase);
+                return true;
             }
+            return false;
         }
 
         public void RemoveUser(int userId)

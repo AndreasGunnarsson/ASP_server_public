@@ -29,19 +29,5 @@
                 <input type="submit" value="Login" class="btn btn-primary" />
             </div>
         </form>
-        <input id="Button1" type="button" value="Logout" onclick="Logout()" />
     </div>
 </div>
-
-<script>
-function Logout() {
-    $.ajax({
-        method: "POST",
-        url: '@Url.Action("Logout", "Home")',
-        async: true,
-        error: function () {
-            return "error";
-        }
-    });
-}
-</script>

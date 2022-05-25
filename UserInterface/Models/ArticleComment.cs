@@ -13,6 +13,7 @@ namespace UserInterface.Models
 
         [FromForm]
         [StringLength(200, ErrorMessage = "The message cannot exceed 200 characters.")]
+        [Display(Name = "Comment")]
         [Required(ErrorMessage = "Comment required.")]
         public string Commentzz { get; set; }
 

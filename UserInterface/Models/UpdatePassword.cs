@@ -6,8 +6,13 @@ namespace UserInterface.Models
     public class UpdatePassword
     {
         [Display(Name = "Old password")]
+        [Required]
+        [StringLength(50)]
         public string OldPassword { get; set; }
+
         [Display(Name = "New password")]
+        [Required]
+        [StringLength(50)]
         public string NewPassword { get; set; }
     }
 }
