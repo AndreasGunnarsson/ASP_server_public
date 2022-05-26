@@ -7,7 +7,7 @@ namespace Core.Interfaces
     public interface IUserRolesRepository
     {
         IEnumerable<Roles> ReadAllRoles();
-        void CreateAccount(Account account);
+        bool CreateAccount(Account account);
         IEnumerable<Account> ReadAllAccounts();
         IEnumerable<AccountsNames> ReadAllAccountNames();
         void UpdateAccount(Account account);

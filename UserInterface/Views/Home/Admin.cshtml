@@ -1,16 +1,18 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 @model UserInterface.Models.Article
 
 @{
     ViewData["Title"] = "Articles";
 }
 
+<button onclick="window.location.href='@Url.Action("CreateArticle", "Home")'">Create article</button>
+
 <div class="text-center">
-    <h1 class="display-4">Articles</h1>
+    <h1 class="display-4">Articles - edit</h1>
     @foreach (var article in Model.articles)
     {
-        <a href="/Home/Article/@article.Id" style="text-decoration:none">
-            <div style="background-color:#ff0000">
+        <a href="/Home/CreateArticle/@article.Id" style="text-decoration:none">
+            <div style="background-color:#5555ff">
                 <p>Title: @article.Title</p>
                 <p>Created: @article.CreateDate</p>
                 @if (@article.EditDate.Ticks != 0)

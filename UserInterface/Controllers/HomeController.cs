@@ -100,8 +100,6 @@ namespace UserInterface.Controllers
                 return View();
             }
 
-            /* var sessionId = Request.Cookies["SessionId"]; */
-            /* var userSession = _loginUserService.CheckLogin(sessionId); */
             if (userSession != null)
             {
                 bool canCreate = false;
@@ -142,6 +140,23 @@ namespace UserInterface.Controllers
             }
 
             return NotFound();
+        }
+
+        [HttpGet]
+        public IActionResult Admin()
+        {
+            var sessionId = Request.Cookies["SessionId"];
+            var userSession = _loginUserService.CheckLogin(sessionId);
+            if (userSession != null && userSession.userRole == 1)
+            {
+                var articles = _createArticleService.ReadAllArticles();
+                var articlesModel = new UserInterface.Models.Article();
+                articlesModel.articles = articles;
+
+                return View(articlesModel);
+            }
+            else
+                return NotFound();
         }
 
         [HttpGet]
@@ -202,19 +217,6 @@ namespace UserInterface.Controllers
         }
 
         [HttpGet]
-        public IActionResult Privacy()
-        {
-            var sessionId = Request.Cookies["SessionId"];
-            var userSession = _loginUserService.CheckLogin(sessionId);
-            if (userSession != null && userSession.userRole == 1)
-                return Ok("Successful auth. Role 1");
-            if (userSession != null && userSession.userRole == 2)
-                return View();
-            else
-                return NotFound("Authorization failed!");
-        }
-
-        [HttpGet]
         public IActionResult CreateUser()
         {
             return View();
@@ -230,8 +232,11 @@ namespace UserInterface.Controllers
             }
 
             AccountsTemp plainTextAccount = new AccountsTemp(model.UserName, model.Password);
-            _createUserService.CreateUser(plainTextAccount);
-            ViewData["InfoMessage"] = "Account created successfully.";
+            bool isCreated = _createUserService.CreateUser(plainTextAccount);
+            if (isCreated)
+                ViewData["InfoMessage"] = "Account created successfully.";
+            else if (!isCreated)
+                ViewData["ErrorMessage"] = "Account was not created.";
             return View();
         }
 

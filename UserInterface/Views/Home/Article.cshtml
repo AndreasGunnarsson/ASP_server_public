@@ -12,7 +12,10 @@
 <h4>@article.Title</h4>
 <div style="display:flex; flex-direction:row; justify-content:space-between">
     <p>@article.CreateDate</p>
-    <p>@article.EditDate</p>
+    @if (@article.EditDate.Ticks != 0)
+    {
+    <p>Edited: @article.EditDate</p>
+    }
 </div>
 
 <div style="background-color:#aa0000">

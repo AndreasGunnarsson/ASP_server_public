@@ -23,7 +23,7 @@ namespace Infrastructure
             return roles;
         }
 
-        public void CreateAccount(Account account)
+        public bool CreateAccount(Account account)
         {
             string sql = "INSERT INTO Accounts (Name, PasswordHash, PasswordSalt) VALUES (@AccountName, @PwdHash, @PwdSalt)";
             var parameters = new {
@@ -32,7 +32,10 @@ namespace Infrastructure
                 PwdSalt = account.PasswordSalt
             };
 
-            _db.Connection.Execute(sql, parameters);
+            int rows = _db.Connection.Execute(sql, parameters);
+            if (rows != 1)
+                return false;
+            return true;
         }
 
         public IEnumerable<Account> ReadAllAccounts()

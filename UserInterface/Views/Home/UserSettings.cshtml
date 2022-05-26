@@ -31,16 +31,16 @@
             </div>
             <div class="form-group">
                 <label asp-for="NewPassword" class="control-label"></label>
-                <input asp-for="NewPassword" class="form-control" />
+                <input asp-for="NewPassword" class="form-control" onchange="CheckConfirm(this)" />
                 <span asp-validation-for="NewPassword" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label for="confirmNewPassword" class="control-label">Confirm new password</label>
-                <input id="confirmNewPassword" class="form-control" />
-                <span class="text-danger"></span>
+                <input id="confirmNewPassword" type="password" class="form-control" onchange="CheckConfirm(this)" />
+                <span id="confirmWarning" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input disabled="true" id="submitButton" type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
 
@@ -117,5 +117,33 @@
                 messageElement.innerHTML = j.responseText;
             }
         });
+    }
+
+    function CheckConfirm(e) {
+        let confirmElement = null;
+        if (e.id === 'NewPassword') {
+            confirmElement = document.getElementById('confirmNewPassword');
+        }
+        else if (e.id === 'confirmNewPassword') {
+            confirmElement = document.getElementById('NewPassword');
+        }
+        if (confirmElement.value.length === 0 || e.value.length === 0) {
+            const submitButton = document.getElementById('submitButton');
+            submitButton.disabled = true;
+            const confirmWarning = document.getElementById('confirmWarning');
+            confirmWarning.innerHTML = 'Password cannot be empty.';
+        }
+        else if (confirmElement.value === e.value) {
+            const submitButton = document.getElementById('submitButton');
+            submitButton.disabled = false;
+            const confirmWarning = document.getElementById('confirmWarning');
+            confirmWarning.innerHTML = '';
+        }
+        else {
+            const submitButton = document.getElementById('submitButton');
+            submitButton.disabled = true;
+            const confirmWarning = document.getElementById('confirmWarning');
+            confirmWarning.innerHTML = 'Password doesn\'t match';
+        }
     }
 </script>

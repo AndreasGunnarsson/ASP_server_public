@@ -29,12 +29,13 @@ namespace Application
             return true;
         }
 
-        public void CreateUser(AccountsTemp account)
+        public bool CreateUser(AccountsTemp account)
         {
             var passwordSalt = _passwordManagementService.GenerateSalt();
             var passwordHash = _passwordManagementService.GeneratePassword(account.Password, passwordSalt);
             Account accountToDatebase = new Account(account.Name, passwordHash, passwordSalt);
-            _repository.CreateAccount(accountToDatebase);
+            var isCreated = _repository.CreateAccount(accountToDatebase);
+            return isCreated;
         }
 
         public bool UpdatePassword(string oldPassword, string newPassword, int accountId)
