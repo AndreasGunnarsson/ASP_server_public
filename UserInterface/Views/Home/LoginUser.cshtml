@@ -7,26 +7,25 @@
     ViewData["InfoMessage"] = ViewData["InfoMessage"];
 }
 
-<h1>Login User</h1>
+<h1 class="titletext1">Login User</h1>
 
-<h4>Login User</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
+<div>
+    <div>
         <form asp-action="LoginUser">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="UserName" class="control-label"></label>
-                <input asp-for="UserName" class="form-control" />
+            <div class="containerinput">
+                <label asp-for="UserName"></label>
+                <input asp-for="UserName" class="inputtext" />
                 <span asp-validation-for="UserName" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
+            <div class="containerinput">
+                <label asp-for="Password"></label>
+                <input asp-for="Password" class="inputtext" />
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Login" class="btn btn-primary" />
+            <div>
+                <input type="submit" value="Login" />
             </div>
         </form>
     </div>

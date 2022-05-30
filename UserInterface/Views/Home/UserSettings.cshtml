@@ -14,49 +14,48 @@
     }
 }
 
-<h1>User settings</h1>
-<h4>User settings</h4>
-<hr />
+<h1 class="titletext1">User settings</h1>
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Logout">
+    <div>
+        <form asp-action="Logout" style="margin-bottom:1rem">
             <input type="submit" value="Logout" />
         </form>
-        <form asp-action="UserSettings">
+
+        <form asp-action="UserSettings" class="background2" style="padding:1rem">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="OldPassword" class="control-label"></label>
-                <input asp-for="OldPassword" class="form-control" />
+            <div class="containerinput">
+                <label asp-for="OldPassword" class="nomargin"></label>
+                <input asp-for="OldPassword" class="inputtext" />
                 <span asp-validation-for="OldPassword" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="NewPassword" class="control-label"></label>
-                <input asp-for="NewPassword" class="form-control" onchange="CheckConfirm(this)" />
+            <div class="containerinput">
+                <label asp-for="NewPassword" class="nomargin"></label>
+                <input asp-for="NewPassword" class="inputtext" onchange="CheckConfirm(this)" />
                 <span asp-validation-for="NewPassword" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label for="confirmNewPassword" class="control-label">Confirm new password</label>
-                <input id="confirmNewPassword" type="password" class="form-control" onchange="CheckConfirm(this)" />
+            <div class="containerinput">
+                <label for="confirmNewPassword" class="nomargin">Confirm new password</label>
+                <input id="confirmNewPassword" class="inputtext" type="password" onchange="CheckConfirm(this)" />
                 <span id="confirmWarning" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input disabled="true" id="submitButton" type="submit" value="Save" class="btn btn-primary" />
+            <div>
+                <input disabled="true" id="submitButton" type="submit" value="Save" />
             </div>
         </form>
 
-        <button id="openModalButton" onclick="OpenModal()" class="btn btn-primary" data-target="myModal" data-toggle="modal">Delete account</button>
+        <button id="openModalButton" onclick="OpenModal()" data-target="myModal" data-toggle="modal" style="margin-top:1rem">Delete account</button>
 
-        <h4>Comments</h4>
+        <h2 class="titletext2" style="margin-top:1rem">Comments</h2>
 
-        <div id="commentscontainer" style="background-color:#0000aa">
+        <div id="commentscontainer" class="background1" style="padding: .5rem .5rem 0 .5rem">
             @foreach (var comment in comments)
             {
             var containerId = $"{comment.Id}_container";
-            <div id=@containerId style="background-color:#aa0000;margin:1rem">
-                    <p>@comment.CreateDate</p>
-                    <p>@comment.Comment</p>
-                    <button id="@comment.Id" onclick="RemoveComment(this.id)">Remove</button>
-                </div>
+            <div id=@containerId class="background2" style="margin: 0 0 .5rem 0">
+                <p>@comment.CreateDate</p>
+                <p>@comment.Comment</p>
+                <button id="@comment.Id" onclick="RemoveComment(this.id)" style="margin-bottom:.25rem">Remove</button>
+            </div>
             }
         </div>
 

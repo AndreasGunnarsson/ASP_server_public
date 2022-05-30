@@ -9,29 +9,28 @@
     var isLoggedIn = (bool)ViewData["isLoggedIn"];
 }
 
-<h4>@article.Title</h4>
-<div style="display:flex; flex-direction:row; justify-content:space-between">
-    <p>@article.CreateDate</p>
+<h2 class="titletext1">@article.Title</h2>
+<div class="container2 background1">
+    <p class="nomargin">Created: @article.CreateDate</p>
     @if (@article.EditDate.Ticks != 0)
     {
-    <p>Edited: @article.EditDate</p>
+    <p class="nomargin">Edited: @article.EditDate</p>
     }
 </div>
 
-<div style="background-color:#aa0000">
+<div style="background-color:#de54e7">
     <div>@Html.Raw(articleText)</div>
 </div>
 
-<h4>Comments</h4>
+<h4 class="titletext2" style="margin-top:1.5rem">Comments</h4>
 
 @if (isLoggedIn)
 {
     <div id="formContainer">
-        <form id="commentForm" asp-action="Article">
+        <form class="background2" id="commentForm" asp-action="Article">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div>
-                <label asp-for="Commentzz"></label>
-                <input asp-for="Commentzz" />
+                <input asp-for="Commentzz" class="inputtext" />
                 <span asp-validation-for="Commentzz" class="text-danger"></span>
             </div>
             <div>
@@ -43,25 +42,32 @@
             <div>
                 <input type="submit" value="Add comment" />
             </div>
-                <button type="button" onclick="Cancel(event)">Cancel</button>
+                <button style="margin-bottom: .25rem" type="button" onclick="Cancel(event)">Cancel</button>
         </form>
     </div>
 }
 
-<div id="commentscontainer" style="background-color:#0000aa">
+<div id="commentscontainer">
     @foreach (var comment in comments)
     {
-        <div data-commentsid="@comment.CommentsId" id="@comment.Id" style="background-color:#aa0000;margin:1rem">
-            <p style="color:#ffffff">@comment.CreateDate</p>
-            <p style="color:#ffffff">@comment.Comment</p>
-            @{if (comment.AccountsId.HasValue)
-            { <p style="color:#ffffff">@comment.Name</p> }
-            else
-            { <p style="color:#ff0000">[DELETED USER]</p> }
-            }
-            @{if (isLoggedIn)
-              {<button onclick="SelectedComment(this)">Answer</button>}
-            }
+        <div data-commentsid="@comment.CommentsId" id="@comment.Id" class="comment background1">
+            <div data-commentsid2="@comment.Id" class="comment2 background2">
+                <div class="container2 background1">
+                    <p class="nomargin">@comment.CreateDate</p>
+                    @{if (comment.AccountsId.HasValue)
+                    {
+                    <p class="nomargin">@comment.Name</p>
+                    }
+                    else
+                    {
+                    <p class="nomargin" style="color:#ff0f1d">[DELETED USER]</p>
+                    }}
+                </div>
+                <p style="margin:0;padding:0 .25rem">@comment.Comment</p>
+                @{if (isLoggedIn)
+                  {<button onclick="SelectedComment(this)">Answer</button>}
+                }
+            </div>
         </div>
     }
 </div>
@@ -71,7 +77,7 @@
 
     function SortComments()
     {
-        var container = [].slice.call(document.getElementById('commentscontainer').children);
+        const container = [].slice.call(document.getElementById('commentscontainer').children);
         container.forEach(element => {
             if (element.dataset.commentsid > 0)
             {
@@ -83,19 +89,19 @@
 
     function SelectedComment(button)
     {
-        var element = document.getElementById('CommentsIdzz');
-        var formContainer = document.getElementById('commentForm');
-        var comment = document.getElementById(button.parentElement.id);
-        comment.insertAdjacentElement('beforeend', formContainer);
-        element.value = button.parentElement.id;
+        const element = document.getElementById('CommentsIdzz');
+        const formContainer = document.getElementById('commentForm');
+        const comment2 = document.querySelector('[data-commentsid2="'+button.parentElement.parentElement.id+'"]');
+        comment2.insertAdjacentElement('beforeend', formContainer);
+        element.value = button.parentElement.parentElement.id;
     }
 
     function Cancel(event)
     {
-        var selected = document.getElementById('CommentsIdzz');
+        const selected = document.getElementById('CommentsIdzz');
         selected.value = "";
-        var element = document.getElementById('formContainer');
-        var formContainer = document.getElementById('commentForm');
+        const element = document.getElementById('formContainer');
+        const formContainer = document.getElementById('commentForm');
         element.append(formContainer);
     }
 </script>

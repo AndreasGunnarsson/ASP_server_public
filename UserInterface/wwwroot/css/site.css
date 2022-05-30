@@ -1,13 +1,82 @@
-﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-for details on configuring this project to bundle and minify static web assets. */
+﻿html * {
+  font-size: 14px;
+  color: #ffffff;
+}
 
+.nomargin {
+    margin: 0;
+}
+
+.background1 {
+    background-color: #af35a3;
+}
+
+.background2 {
+    background-color: #de54e7;
+}
+
+.titletext1 {
+    font-size: 2rem;
+}
+
+.titletext2 {
+    font-size: 1.25rem;
+}
+
+input[type=submit], button {
+    margin: .5rem 0 0 .5rem;
+    background-color: #af35a3;
+    border-radius: .25rem;
+    border: none;
+}
+
+input[type=submit]:hover, button:hover {
+    background-color: #00FF00;
+}
+
+input[type=submit]:active, button:active {
+    background-color: #0000FF;
+}
+
+input[type=submit]:disabled, button:disabled {
+    background-color: #333333;
+}
+
+.inputtext {
+    color: #000000;
+    margin: .25rem;
+    width: 90%;
+}
+
+.containerinput {
+    display: flex;
+    flex-direction: column;
+}
+
+.container2 {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    padding: 0 .5rem;
+}
+
+.comment {
+    margin: .75rem;
+}
+
+.comment2 {
+    padding: .25rem;
+}
+
+/* Garbage below
+-------------------------------------------------- */
 a.navbar-brand {
   white-space: normal;
   text-align: center;
   word-break: break-all;
 }
 
-/* Provide sufficient contrast against white background */
 a {
   color: #0366d6;
 }
@@ -26,9 +95,7 @@ a {
 
 /* Sticky footer styles
 -------------------------------------------------- */
-html {
-  font-size: 14px;
-}
+
 @media (min-width: 768px) {
   html {
     font-size: 16px;

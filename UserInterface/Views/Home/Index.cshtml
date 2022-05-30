@@ -6,17 +6,19 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Articles</h1>
+    <h1 class="titletext1">Articles</h1>
     @foreach (var article in Model.articles)
     {
         <a href="/Home/Article/@article.Id" style="text-decoration:none">
-            <div style="background-color:#ff0000">
-                <p>Title: @article.Title</p>
-                <p>Created: @article.CreateDate</p>
-                @if (@article.EditDate.Ticks != 0)
-                {
-                <p>Edited: @article.EditDate</p>
-                }
+            <div class="background2">
+                <h2 class="titletext2">Title: @article.Title</h2>
+                <div class="container2 background1">
+                    <p class="nomargin">Created: @article.CreateDate</p>
+                    @if (@article.EditDate.Ticks != 0)
+                    {
+                    <p class="nomargin">Edited: @article.EditDate</p>
+                    }
+                </div>
             </div>
         </a>
     }
